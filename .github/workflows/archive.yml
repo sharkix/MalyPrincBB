@@ -47,9 +47,23 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Set up Node.js
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install PDF rendering dependencies
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
       - name: Refresh archive
         if: steps.gate.outputs.run == 'true'
-        run: python3 scripts/archive.py --date "${{ steps.gate.outputs.archive_date }}"
+        run: |
+          python3 scripts/archive.py --date "${{ steps.gate.outputs.archive_date }}"
+          npm run render-pdfs -- --date "${{ steps.gate.outputs.archive_date }}"
 
       - name: Commit changes
         if: steps.gate.outputs.run == 'true'

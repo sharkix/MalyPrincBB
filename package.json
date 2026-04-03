@@ -1,0 +1,11 @@
+{
+  "name": "maly-princ-bb",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render-pdfs": "node scripts/render_pdfs.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.52.0"
+  }
+}

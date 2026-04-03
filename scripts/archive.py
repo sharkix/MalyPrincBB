@@ -363,8 +363,10 @@ def mirror_snapshot(
 
     original_path = original_dir / "index.html"
     original_path.write_bytes(html_bytes)
+    source_txt_path = original_dir / "source.txt"
 
     html_text = html_bytes.decode("utf-8", errors="replace")
+    source_txt_path.write_text(html_text, encoding="utf-8")
     asset_cache: dict[str, AssetRecord] = {}
     reserved_paths: set[Path] = set()
     offline_html = rewrite_html(html_text, source_url, offline_dir, asset_cache, reserved_paths)
@@ -377,7 +379,9 @@ def mirror_snapshot(
         "coord": extract_coord(html_text),
         "source_url": source_url,
         "original_path": original_path.relative_to(repo_root()).as_posix(),
+        "source_txt_path": source_txt_path.relative_to(repo_root()).as_posix(),
         "offline_path": (offline_dir / "index.html").relative_to(repo_root()).as_posix(),
+        "offline_pdf_path": (offline_dir / "page.pdf").relative_to(repo_root()).as_posix(),
     }
     write_json(snapshot_root / "meta.json", metadata)
     return metadata
@@ -421,7 +425,9 @@ def render_index(root: Path) -> None:
           <p class="card-meta">Archivovane: {archive_iso}</p>
           <div class="card-links">
             <a href="days/{day:02d}/original/">Povodne HTML</a>
+            <a href="days/{day:02d}/original/source.txt">Zdroj TXT</a>
             <a href="days/{day:02d}/offline/">Offline verzia</a>
+            <a href="days/{day:02d}/offline/page.pdf">PDF</a>
           </div>
         </article>
 """
@@ -447,7 +453,9 @@ def render_index(root: Path) -> None:
         <p>{escape(latest.get("title") or "Maly Princ")}</p>
         <div class="card-links">
           <a href="days/{latest_day:02d}/original/">Povodne HTML</a>
+          <a href="days/{latest_day:02d}/original/source.txt">Zdroj TXT</a>
           <a href="days/{latest_day:02d}/offline/">Offline verzia</a>
+          <a href="days/{latest_day:02d}/offline/page.pdf">PDF</a>
         </div>
       </section>
 """

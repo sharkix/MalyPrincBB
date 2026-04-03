@@ -5,7 +5,9 @@ This repository archives the daily page from `https://malyprinc.mikme.eu/`.
 It keeps two variants for every captured day:
 
 - `original/` keeps the raw HTML exactly as downloaded.
+- `original/source.txt` keeps the full HTML source as plain text.
 - `offline/` keeps a localized copy with downloaded CSS, images, and other page assets.
+- `offline/page.pdf` keeps a printable PDF generated from the offline copy.
 
 Repository layout:
 

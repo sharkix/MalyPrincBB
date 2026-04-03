@@ -5,5 +5,7 @@
   "coord": "GCAFC20",
   "source_url": "https://malyprinc.mikme.eu/",
   "original_path": "snapshots/2026-04-03/original/index.html",
-  "offline_path": "snapshots/2026-04-03/offline/index.html"
+  "source_txt_path": "snapshots/2026-04-03/original/source.txt",
+  "offline_path": "snapshots/2026-04-03/offline/index.html",
+  "offline_pdf_path": "snapshots/2026-04-03/offline/page.pdf"
 }
