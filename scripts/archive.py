@@ -148,9 +148,15 @@ def guess_extension(url: str, headers: dict[str, str], content: bytes) -> str:
     return ""
 
 
-def target_rel_path(url: str, headers: dict[str, str], content: bytes, existing: set[Path]) -> Path:
+def target_rel_path(
+    url: str,
+    headers: dict[str, str],
+    content: bytes,
+    existing: set[Path],
+    host_alias: str | None = None,
+) -> Path:
     parsed = urlparse(url)
-    host = sanitize_piece(parsed.netloc or "root")
+    host = sanitize_piece(host_alias or parsed.netloc or "root")
     path = parsed.path or "/"
     pure_path = Path(path.lstrip("/")) if path != "/" else Path("index")
 
@@ -226,7 +232,9 @@ def ensure_asset(
         return asset_cache[absolute_url]
 
     content, headers = fetch_url(absolute_url)
-    rel_path = target_rel_path(absolute_url, headers, content, reserved_paths)
+    source_host = urlparse(base_url).netloc
+    host_alias = "local" if parsed.netloc == source_host else None
+    rel_path = target_rel_path(absolute_url, headers, content, reserved_paths, host_alias=host_alias)
     reserved_paths.add(rel_path)
     full_path = offline_root / rel_path
     record = AssetRecord(
@@ -475,7 +483,7 @@ def render_index(root: Path) -> None:
         <p class="eyebrow">GitHub Pages archiv</p>
         <h1>Maly Princ BB</h1>
         <p class="intro">
-          Denne archivovana stranka <a href="https://malyprinc.mikme.eu/">malyprinc.mikme.eu</a>
+          Denne archivovana stranka <code>malyprinc.mikme.eu</code>
           s dvoma verziami pre kazdy den: presne povodne HTML a lokalna offline kopia.
         </p>
         <div class="hero-stats">
