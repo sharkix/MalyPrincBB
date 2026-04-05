@@ -19,9 +19,9 @@ from zoneinfo import ZoneInfo
 
 
 USER_AGENT = "Mozilla/5.0 (compatible; MalyPrincBBArchiver/1.0; +https://github.com)"
-AUTH_PASSWORD_HASH = "8855e420fd3ce777fe0c2d0589c5d81036d06da4e7e4a52242a5549af3da566d"
 AUTH_SESSION_KEY = "mpbb-auth-v1"
 AUTH_BYPASS_PARAM = "mpbb_render"
+AUTH_HASH_RE = re.compile(r'const HASH = "([0-9a-f]{64})";')
 ATTR_URL_RE = re.compile(
     r'(?P<prefix>\b(?P<name>src|href|poster)\s*=\s*)(?P<quote>["\'])(?P<url>[^"\']+)(?P=quote)',
     re.IGNORECASE,
@@ -233,7 +233,35 @@ def absolutize_css_urls(css_text: str, base_url: str) -> str:
     return CSS_URL_RE.sub(replacer, css_text)
 
 
-def auth_gate_markup() -> str:
+def configured_auth_hash(root: Path) -> str | None:
+    explicit_hash = os.environ.get("MPBB_PASSWORD_HASH", "").strip().lower()
+    if explicit_hash:
+        return explicit_hash
+
+    plain_password = os.environ.get("MPBB_SITE_PASSWORD")
+    if plain_password:
+        return hashlib.sha256(plain_password.encode("utf-8")).hexdigest()
+
+    index_path = root / "index.html"
+    if index_path.exists():
+        match = AUTH_HASH_RE.search(index_path.read_text(encoding="utf-8", errors="replace"))
+        if match:
+            return match.group(1)
+
+    return None
+
+
+def resolve_auth_hash(root: Path) -> str:
+    auth_hash = configured_auth_hash(root)
+    if auth_hash:
+        return auth_hash
+    raise RuntimeError(
+        "Missing MPBB_SITE_PASSWORD or MPBB_PASSWORD_HASH. "
+        "Configure the GitHub secret MPBB_SITE_PASSWORD or regenerate from an existing index.html."
+    )
+
+
+def auth_gate_markup(auth_hash: str) -> str:
     return f"""
   <style id="mpbb-auth-style">
     body {{
@@ -242,7 +270,7 @@ def auth_gate_markup() -> str:
   </style>
   <script id="mpbb-auth-script">
     (() => {{
-      const HASH = "{AUTH_PASSWORD_HASH}";
+      const HASH = "{auth_hash}";
       const KEY = "{AUTH_SESSION_KEY}";
       const BYPASS_PARAM = "{AUTH_BYPASS_PARAM}";
       const deniedHtml = `
@@ -326,13 +354,13 @@ def auth_gate_markup() -> str:
   </script>""".strip("\n")
 
 
-def inject_auth_gate(html_text: str) -> str:
+def inject_auth_gate(html_text: str, auth_hash: str) -> str:
     if 'id="mpbb-auth-script"' in html_text:
         return html_text
-    return re.sub(r"</head>", f"{auth_gate_markup()}\n</head>", html_text, count=1, flags=re.IGNORECASE)
+    return re.sub(r"</head>", f"{auth_gate_markup(auth_hash)}\n</head>", html_text, count=1, flags=re.IGNORECASE)
 
 
-def rewrite_original_html(html_text: str, source_url: str) -> str:
+def rewrite_original_html(html_text: str, source_url: str, auth_hash: str) -> str:
     def replace_attr(match: re.Match[str]) -> str:
         raw_url = match.group("url").strip()
         if should_skip_url(raw_url) or not is_relative_url(raw_url):
@@ -365,7 +393,7 @@ def rewrite_original_html(html_text: str, source_url: str) -> str:
     html_text = SRCSET_RE.sub(replace_srcset, html_text)
     html_text = STYLE_ATTR_RE.sub(replace_style_attr, html_text)
     html_text = STYLE_TAG_RE.sub(replace_style_tag, html_text)
-    return inject_auth_gate(html_text)
+    return inject_auth_gate(html_text, auth_hash)
 
 
 def ensure_asset(
@@ -526,6 +554,7 @@ def mirror_snapshot(
     snapshot_root: Path,
     detected_day: int,
     archive_iso: str,
+    auth_hash: str,
 ) -> dict:
     original_dir = snapshot_root / "original"
     offline_dir = snapshot_root / "offline"
@@ -536,13 +565,13 @@ def mirror_snapshot(
     source_txt_path = original_dir / "source.txt"
 
     html_text = html_bytes.decode("utf-8", errors="replace")
-    original_html = rewrite_original_html(html_text, source_url)
+    original_html = rewrite_original_html(html_text, source_url, auth_hash)
     original_path.write_text(original_html, encoding="utf-8")
     source_txt_path.write_text(html_text, encoding="utf-8")
     asset_cache: dict[str, AssetRecord] = {}
     reserved_paths: set[Path] = set()
     offline_html = rewrite_html(html_text, source_url, offline_dir, asset_cache, reserved_paths)
-    offline_html = inject_auth_gate(offline_html)
+    offline_html = inject_auth_gate(offline_html, auth_hash)
     (offline_dir / "index.html").write_text(offline_html, encoding="utf-8")
 
     metadata = {
@@ -575,7 +604,7 @@ def collect_day_metadata(root: Path) -> dict[int, dict]:
     return result
 
 
-def render_index(root: Path) -> None:
+def render_index(root: Path, auth_hash: str) -> None:
     metadata = collect_day_metadata(root)
     captured_count = len(metadata)
     missing_count = max(0, 30 - captured_count)
@@ -643,7 +672,7 @@ def render_index(root: Path) -> None:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MalyPrincBB Archive</title>
   <link rel="stylesheet" href="assets/site.css">
-{auth_gate_markup()}
+{auth_gate_markup(auth_hash)}
 </head>
 <body>
   <main class="page-shell">
@@ -686,7 +715,8 @@ def render_index(root: Path) -> None:
 
 def run_archive(args: argparse.Namespace) -> dict | None:
     root = repo_root()
-    render_index(root)
+    auth_hash = resolve_auth_hash(root)
+    render_index(root, auth_hash)
     if args.generate_only:
         return None
 
@@ -696,7 +726,7 @@ def run_archive(args: argparse.Namespace) -> dict | None:
     html_text = html_bytes.decode("utf-8", errors="replace")
     detected_day = extract_day(html_text, archive_day.day)
     snapshot_root = root / "snapshots" / archive_iso
-    metadata = mirror_snapshot(html_bytes, args.source_url, snapshot_root, detected_day, archive_iso)
+    metadata = mirror_snapshot(html_bytes, args.source_url, snapshot_root, detected_day, archive_iso, auth_hash)
 
     if 1 <= detected_day <= 30:
         day_root = root / "days" / f"{detected_day:02d}"
@@ -705,7 +735,7 @@ def run_archive(args: argparse.Namespace) -> dict | None:
         replace_tree(day_root / "offline", snapshot_root / "offline")
         write_json(day_root / "meta.json", metadata)
 
-    render_index(root)
+    render_index(root, auth_hash)
     return metadata
 
 

@@ -19,6 +19,7 @@ Automation:
 
 - GitHub Actions runs daily around `00:10` Europe/Bratislava time.
 - Because GitHub Actions cron is UTC-only, the workflow triggers at both `22:10` and `23:10` UTC and only continues when the local Bratislava hour is `00`.
+- Repository secret `MPBB_SITE_PASSWORD` controls the client-side password prompt hash injected into generated HTML pages.
 
 Manual refresh:
 
