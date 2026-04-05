@@ -31,6 +31,7 @@ STYLE_ATTR_RE = re.compile(
     r'(?P<prefix>\bstyle\s*=\s*)(?P<quote>["\'])(?P<value>.*?)(?P=quote)',
     re.IGNORECASE | re.DOTALL,
 )
+STYLE_TAG_RE = re.compile(r"(?P<open><style\b[^>]*>)(?P<value>.*?)(?P<close></style>)", re.IGNORECASE | re.DOTALL)
 CSS_URL_RE = re.compile(r"url\((?P<quote>['\"]?)(?P<url>[^)\"']+)(?P=quote)\)")
 DAY_RE = re.compile(r"Deň:\s*(?:</?strong>\s*)?(?P<day>\d{1,2})", re.IGNORECASE)
 TITLE_RE = re.compile(r"<title>(?P<title>.*?)</title>", re.IGNORECASE | re.DOTALL)
@@ -218,78 +219,51 @@ def is_relative_url(url: str) -> bool:
     return not parsed.scheme and not parsed.netloc and not url.startswith("//")
 
 
-def original_asset_path(url: str) -> Path:
-    parsed = urlparse(url)
-    raw_path = parsed.path or ""
-    normalized = Path(raw_path.lstrip("/")) if raw_path else Path("index")
-    if parsed.query:
-        normalized = normalized.with_name(f"{normalized.stem}-{short_hash(parsed.query)}{normalized.suffix}")
-    return normalized
-
-
-def mirror_original_css(css_text: str, base_url: str, current_dir: Path, original_root: Path, fetched: set[str]) -> None:
-    for match in CSS_URL_RE.finditer(css_text):
+def absolutize_css_urls(css_text: str, base_url: str) -> str:
+    def replacer(match: re.Match[str]) -> str:
         raw_url = match.group("url").strip()
         if should_skip_url(raw_url) or not is_relative_url(raw_url):
-            continue
-        mirror_original_asset(raw_url, base_url, current_dir, original_root, fetched)
+            return match.group(0)
+        absolute_url = urljoin(base_url, raw_url)
+        return f'url("{absolute_url}")'
+
+    return CSS_URL_RE.sub(replacer, css_text)
 
 
-def mirror_original_asset(
-    raw_url: str,
-    base_url: str,
-    current_dir: Path,
-    original_root: Path,
-    fetched: set[str],
-) -> None:
-    if should_skip_url(raw_url):
-        return
+def rewrite_original_html(html_text: str, source_url: str) -> str:
+    def replace_attr(match: re.Match[str]) -> str:
+        raw_url = match.group("url").strip()
+        if should_skip_url(raw_url) or not is_relative_url(raw_url):
+            return match.group(0)
+        absolute_url = urljoin(source_url, raw_url)
+        return f'{match.group("prefix")}{match.group("quote")}{absolute_url}{match.group("quote")}'
 
-    absolute_url = urljoin(base_url, raw_url)
-    if absolute_url in fetched:
-        return
-
-    parsed = urlparse(absolute_url)
-    if parsed.scheme not in ("http", "https"):
-        return
-
-    content, headers = fetch_url(absolute_url)
-    relative_target = original_asset_path(raw_url)
-    target = current_dir / relative_target
-    target.parent.mkdir(parents=True, exist_ok=True)
-    fetched.add(absolute_url)
-
-    content_type = headers.get("content-type", "")
-    if content_type.startswith("text/css") or target.suffix.lower() == ".css":
-        css_text = content.decode("utf-8", errors="replace")
-        target.write_text(css_text, encoding="utf-8")
-        mirror_original_css(css_text, absolute_url, target.parent, original_root, fetched)
-        return
-
-    target.write_bytes(content)
-
-
-def mirror_original_support_files(html_text: str, source_url: str, original_root: Path) -> None:
-    fetched: set[str] = set()
-
-    def queue_url(raw_url: str) -> None:
-        if not is_relative_url(raw_url):
-            return
-        mirror_original_asset(raw_url, source_url, original_root, original_root, fetched)
-
-    for match in ATTR_URL_RE.finditer(html_text):
-        queue_url(match.group("url").strip())
-
-    for match in SRCSET_RE.finditer(html_text):
+    def replace_srcset(match: re.Match[str]) -> str:
+        parts = []
         for chunk in match.group("value").split(","):
             segment = chunk.strip()
             if not segment:
                 continue
-            queue_url(segment.split()[0])
+            tokens = segment.split()
+            raw_url = tokens[0]
+            if is_relative_url(raw_url) and not should_skip_url(raw_url):
+                tokens[0] = urljoin(source_url, raw_url)
+            parts.append(" ".join(tokens))
+        return f'{match.group("prefix")}{match.group("quote")}{", ".join(parts)}{match.group("quote")}'
 
-    for match in STYLE_ATTR_RE.finditer(html_text):
-        inline_css = match.group("value")
-        mirror_original_css(inline_css, source_url, original_root, original_root, fetched)
+    def replace_style_attr(match: re.Match[str]) -> str:
+        rewritten = absolutize_css_urls(match.group("value"), source_url)
+        return f'{match.group("prefix")}{match.group("quote")}{rewritten}{match.group("quote")}'
+
+    def replace_style_tag(match: re.Match[str]) -> str:
+        rewritten = absolutize_css_urls(match.group("value"), source_url)
+        return f'{match.group("open")}{rewritten}{match.group("close")}'
+
+    html_text = ATTR_URL_RE.sub(replace_attr, html_text)
+    html_text = SRCSET_RE.sub(replace_srcset, html_text)
+    html_text = STYLE_ATTR_RE.sub(replace_style_attr, html_text)
+    html_text = STYLE_TAG_RE.sub(replace_style_tag, html_text)
+    return html_text
 
 
 def ensure_asset(
@@ -449,12 +423,12 @@ def mirror_snapshot(
     offline_dir.mkdir(parents=True, exist_ok=True)
 
     original_path = original_dir / "index.html"
-    original_path.write_bytes(html_bytes)
     source_txt_path = original_dir / "source.txt"
 
     html_text = html_bytes.decode("utf-8", errors="replace")
+    original_html = rewrite_original_html(html_text, source_url)
+    original_path.write_text(original_html, encoding="utf-8")
     source_txt_path.write_text(html_text, encoding="utf-8")
-    mirror_original_support_files(html_text, source_url, original_dir)
     asset_cache: dict[str, AssetRecord] = {}
     reserved_paths: set[Path] = set()
     offline_html = rewrite_html(html_text, source_url, offline_dir, asset_cache, reserved_paths)
