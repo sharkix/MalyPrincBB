@@ -6,95 +6,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://malyprinc.mikme.eu/styles.css">
   <title>Malý Princ</title>
-  <style id="mpbb-auth-style">
-    body {
-      display: none !important;
-    }
-  </style>
-  <script id="mpbb-auth-script">
-    (() => {
-      const HASH = "8855e420fd3ce777fe0c2d0589c5d81036d06da4e7e4a52242a5549af3da566d";
-      const KEY = "mpbb-auth-v1";
-      const BYPASS_PARAM = "mpbb_render";
-      const deniedHtml = `
-<main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
-  <div style="max-width:32rem;text-align:center;">
-    <h1 style="margin:0 0 12px;">Prístup zamietnutý</h1>
-    <p style="margin:0;">Bez správneho hesla sa obsah nezobrazí.</p>
-  </div>
-</main>`;
-
-      const reveal = () => {
-        const style = document.getElementById("mpbb-auth-style");
-        if (style) {
-          style.remove();
+      <style id="mpbb-auth-style">
+        body {
+          display: none !important;
         }
-        if (document.body) {
-          document.body.style.removeProperty("display");
-        }
-      };
+      </style>
+      <script id="mpbb-auth-script">
+        (() => {
+          const HASH = "8855e420fd3ce777fe0c2d0589c5d81036d06da4e7e4a52242a5549af3da566d";
+          const KEY = "mpbb-auth-v1";
+          const BYPASS_PARAM = "mpbb_render";
+          const deniedHtml = `
+      <main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
+        <div style="max-width:32rem;text-align:center;">
+          <h1 style="margin:0 0 12px;">Prístup zamietnutý</h1>
+          <p style="margin:0;">Bez správneho hesla sa obsah nezobrazí.</p>
+        </div>
+      </main>`;
 
-      const deny = () => {
-        const showDenied = () => {
-          if (!document.body) {
-            return;
+          const reveal = () => {
+            const style = document.getElementById("mpbb-auth-style");
+            if (style) {
+              style.remove();
+            }
+            if (document.body) {
+              document.body.style.removeProperty("display");
+            }
+          };
+
+          const deny = () => {
+            const showDenied = () => {
+              if (!document.body) {
+                return;
+              }
+              document.body.innerHTML = deniedHtml;
+              document.body.style.display = "block";
+            };
+            if (document.readyState === "loading") {
+              document.addEventListener("DOMContentLoaded", showDenied, { once: true });
+              return;
+            }
+            showDenied();
+          };
+
+          const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
+
+          async function sha256(value) {
+            const bytes = new TextEncoder().encode(value);
+            const digest = await crypto.subtle.digest("SHA-256", bytes);
+            return Array.from(new Uint8Array(digest))
+              .map((byte) => byte.toString(16).padStart(2, "0"))
+              .join("");
           }
-          document.body.innerHTML = deniedHtml;
-          document.body.style.display = "block";
-        };
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", showDenied, { once: true });
-          return;
-        }
-        showDenied();
-      };
 
-      const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
+          async function main() {
+            if (shouldBypass()) {
+              reveal();
+              return;
+            }
 
-      async function sha256(value) {
-        const bytes = new TextEncoder().encode(value);
-        const digest = await crypto.subtle.digest("SHA-256", bytes);
-        return Array.from(new Uint8Array(digest))
-          .map((byte) => byte.toString(16).padStart(2, "0"))
-          .join("");
-      }
+            try {
+              if (window.sessionStorage.getItem(KEY) === HASH) {
+                reveal();
+                return;
+              }
+            } catch (error) {
+            }
 
-      async function main() {
-        if (shouldBypass()) {
-          reveal();
-          return;
-        }
+            const password = window.prompt("Zadaj heslo pre Maly Princ BB");
+            if (password === null) {
+              deny();
+              return;
+            }
 
-        try {
-          if (window.sessionStorage.getItem(KEY) === HASH) {
-            reveal();
-            return;
+            if (await sha256(password) === HASH) {
+              try {
+                window.sessionStorage.setItem(KEY, HASH);
+              } catch (error) {
+              }
+              reveal();
+              return;
+            }
+
+            window.alert("Nesprávne heslo.");
+            deny();
           }
-        } catch (error) {
-        }
 
-        const password = window.prompt("Zadaj heslo pre Maly Princ BB");
-        if (password === null) {
-          deny();
-          return;
-        }
-
-        if (await sha256(password) === HASH) {
-          try {
-            window.sessionStorage.setItem(KEY, HASH);
-          } catch (error) {
-          }
-          reveal();
-          return;
-        }
-
-        window.alert("Nesprávne heslo.");
-        deny();
-      }
-
-      main();
-    })();
-  </script>
+          main();
+        })();
+      </script>
 </head>
 <body>
   <div class="container">

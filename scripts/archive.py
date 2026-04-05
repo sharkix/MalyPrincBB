@@ -10,6 +10,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import textwrap
 from dataclasses import dataclass
 from datetime import date, datetime
 from html import escape
@@ -22,6 +23,10 @@ USER_AGENT = "Mozilla/5.0 (compatible; MalyPrincBBArchiver/1.0; +https://github.
 AUTH_SESSION_KEY = "mpbb-auth-v1"
 AUTH_BYPASS_PARAM = "mpbb_render"
 AUTH_HASH_RE = re.compile(r'const HASH = "([0-9a-f]{64})";')
+AUTH_BLOCK_RE = re.compile(
+    r'(?P<indent>^[ \t]*)<style id="mpbb-auth-style">.*?</style>\s*<script id="mpbb-auth-script">.*?</script>',
+    re.IGNORECASE | re.DOTALL | re.MULTILINE,
+)
 ATTR_URL_RE = re.compile(
     r'(?P<prefix>\b(?P<name>src|href|poster)\s*=\s*)(?P<quote>["\'])(?P<url>[^"\']+)(?P=quote)',
     re.IGNORECASE,
@@ -261,19 +266,20 @@ def resolve_auth_hash(root: Path) -> str:
     )
 
 
-def auth_gate_markup(auth_hash: str) -> str:
-    return f"""
-  <style id="mpbb-auth-style">
-    body {{
-      display: none !important;
-    }}
-  </style>
-  <script id="mpbb-auth-script">
-    (() => {{
-      const HASH = "{auth_hash}";
-      const KEY = "{AUTH_SESSION_KEY}";
-      const BYPASS_PARAM = "{AUTH_BYPASS_PARAM}";
-      const deniedHtml = `
+def auth_gate_markup(auth_hash: str, indent: str = "  ") -> str:
+    markup = textwrap.dedent(
+        f"""
+<style id="mpbb-auth-style">
+  body {{
+    display: none !important;
+  }}
+</style>
+<script id="mpbb-auth-script">
+  (() => {{
+    const HASH = "{auth_hash}";
+    const KEY = "{AUTH_SESSION_KEY}";
+    const BYPASS_PARAM = "{AUTH_BYPASS_PARAM}";
+    const deniedHtml = `
 <main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
   <div style="max-width:32rem;text-align:center;">
     <h1 style="margin:0 0 12px;">Prístup zamietnutý</h1>
@@ -281,83 +287,111 @@ def auth_gate_markup(auth_hash: str) -> str:
   </div>
 </main>`;
 
-      const reveal = () => {{
-        const style = document.getElementById("mpbb-auth-style");
-        if (style) {{
-          style.remove();
-        }}
-        if (document.body) {{
-          document.body.style.removeProperty("display");
-        }}
-      }};
+    const reveal = () => {{
+      const style = document.getElementById("mpbb-auth-style");
+      if (style) {{
+        style.remove();
+      }}
+      if (document.body) {{
+        document.body.style.removeProperty("display");
+      }}
+    }};
 
-      const deny = () => {{
-        const showDenied = () => {{
-          if (!document.body) {{
-            return;
-          }}
-          document.body.innerHTML = deniedHtml;
-          document.body.style.display = "block";
-        }};
-        if (document.readyState === "loading") {{
-          document.addEventListener("DOMContentLoaded", showDenied, {{ once: true }});
+    const deny = () => {{
+      const showDenied = () => {{
+        if (!document.body) {{
           return;
         }}
-        showDenied();
+        document.body.innerHTML = deniedHtml;
+        document.body.style.display = "block";
       }};
+      if (document.readyState === "loading") {{
+        document.addEventListener("DOMContentLoaded", showDenied, {{ once: true }});
+        return;
+      }}
+      showDenied();
+    }};
 
-      const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
+    const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
 
-      async function sha256(value) {{
-        const bytes = new TextEncoder().encode(value);
-        const digest = await crypto.subtle.digest("SHA-256", bytes);
-        return Array.from(new Uint8Array(digest))
-          .map((byte) => byte.toString(16).padStart(2, "0"))
-          .join("");
+    async function sha256(value) {{
+      const bytes = new TextEncoder().encode(value);
+      const digest = await crypto.subtle.digest("SHA-256", bytes);
+      return Array.from(new Uint8Array(digest))
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }}
+
+    async function main() {{
+      if (shouldBypass()) {{
+        reveal();
+        return;
       }}
 
-      async function main() {{
-        if (shouldBypass()) {{
+      try {{
+        if (window.sessionStorage.getItem(KEY) === HASH) {{
           reveal();
           return;
         }}
+      }} catch (error) {{
+      }}
 
+      const password = window.prompt("Zadaj heslo pre Maly Princ BB");
+      if (password === null) {{
+        deny();
+        return;
+      }}
+
+      if (await sha256(password) === HASH) {{
         try {{
-          if (window.sessionStorage.getItem(KEY) === HASH) {{
-            reveal();
-            return;
-          }}
+          window.sessionStorage.setItem(KEY, HASH);
         }} catch (error) {{
         }}
-
-        const password = window.prompt("Zadaj heslo pre Maly Princ BB");
-        if (password === null) {{
-          deny();
-          return;
-        }}
-
-        if (await sha256(password) === HASH) {{
-          try {{
-            window.sessionStorage.setItem(KEY, HASH);
-          }} catch (error) {{
-          }}
-          reveal();
-          return;
-        }}
-
-        window.alert("Nesprávne heslo.");
-        deny();
+        reveal();
+        return;
       }}
 
-      main();
-    }})();
-  </script>""".strip("\n")
+      window.alert("Nesprávne heslo.");
+      deny();
+    }}
+
+    main();
+  }})();
+</script>"""
+    ).strip("\n")
+    return "\n".join(f"{indent}{line}" if line else "" for line in markup.splitlines())
 
 
 def inject_auth_gate(html_text: str, auth_hash: str) -> str:
-    if 'id="mpbb-auth-script"' in html_text:
-        return html_text
+    match = AUTH_BLOCK_RE.search(html_text)
+    if match:
+        return AUTH_BLOCK_RE.sub(auth_gate_markup(auth_hash, indent=match.group("indent")), html_text, count=1)
+    if 'id="mpbb-auth-script"' in html_text or 'id="mpbb-auth-style"' in html_text:
+        html_text = re.sub(
+            r'<style id="mpbb-auth-style">.*?</style>',
+            "",
+            html_text,
+            count=1,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        html_text = re.sub(
+            r'<script id="mpbb-auth-script">.*?</script>',
+            "",
+            html_text,
+            count=1,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
     return re.sub(r"</head>", f"{auth_gate_markup(auth_hash)}\n</head>", html_text, count=1, flags=re.IGNORECASE)
+
+
+def refresh_existing_auth_pages(root: Path, auth_hash: str) -> None:
+    for html_path in root.rglob("*.html"):
+        if any(part in {".git", "node_modules"} for part in html_path.parts):
+            continue
+        html_text = html_path.read_text(encoding="utf-8", errors="replace")
+        updated = inject_auth_gate(html_text, auth_hash)
+        if updated != html_text:
+            html_path.write_text(updated, encoding="utf-8")
 
 
 def rewrite_original_html(html_text: str, source_url: str, auth_hash: str) -> str:
@@ -717,6 +751,7 @@ def run_archive(args: argparse.Namespace) -> dict | None:
     root = repo_root()
     auth_hash = resolve_auth_hash(root)
     render_index(root, auth_hash)
+    refresh_existing_auth_pages(root, auth_hash)
     if args.generate_only:
         return None
 
@@ -736,6 +771,7 @@ def run_archive(args: argparse.Namespace) -> dict | None:
         write_json(day_root / "meta.json", metadata)
 
     render_index(root, auth_hash)
+    refresh_existing_auth_pages(root, auth_hash)
     return metadata
 
 
