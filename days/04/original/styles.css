@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    position: relative;
+    background-image: url('https://img.freepik.com/premium-photo/top-view-tile-pattern-as-background_63047-1590.jpg?w=2000');
+  }
+
+  
+  
+  .container {
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #087ce940;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+    margin-top: 15px;
+    border: 1px solid #70707070
+  }
+  
+  .header-left,
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-left > * {
+    margin-right: 10px;
+  }
+  
+  .header-right > * {
+    margin-left: 10px;
+  }
+  
+  main {
+    padding: 50px;
+    margin-top: 80px;
+    text-align: center;
+  }
+  

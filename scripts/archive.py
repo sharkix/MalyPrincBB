@@ -213,6 +213,85 @@ def should_skip_url(url: str) -> bool:
     )
 
 
+def is_relative_url(url: str) -> bool:
+    parsed = urlparse(url.strip())
+    return not parsed.scheme and not parsed.netloc and not url.startswith("//")
+
+
+def original_asset_path(url: str) -> Path:
+    parsed = urlparse(url)
+    raw_path = parsed.path or ""
+    normalized = Path(raw_path.lstrip("/")) if raw_path else Path("index")
+    if parsed.query:
+        normalized = normalized.with_name(f"{normalized.stem}-{short_hash(parsed.query)}{normalized.suffix}")
+    return normalized
+
+
+def mirror_original_css(css_text: str, base_url: str, current_dir: Path, original_root: Path, fetched: set[str]) -> None:
+    for match in CSS_URL_RE.finditer(css_text):
+        raw_url = match.group("url").strip()
+        if should_skip_url(raw_url) or not is_relative_url(raw_url):
+            continue
+        mirror_original_asset(raw_url, base_url, current_dir, original_root, fetched)
+
+
+def mirror_original_asset(
+    raw_url: str,
+    base_url: str,
+    current_dir: Path,
+    original_root: Path,
+    fetched: set[str],
+) -> None:
+    if should_skip_url(raw_url):
+        return
+
+    absolute_url = urljoin(base_url, raw_url)
+    if absolute_url in fetched:
+        return
+
+    parsed = urlparse(absolute_url)
+    if parsed.scheme not in ("http", "https"):
+        return
+
+    content, headers = fetch_url(absolute_url)
+    relative_target = original_asset_path(raw_url)
+    target = current_dir / relative_target
+    target.parent.mkdir(parents=True, exist_ok=True)
+    fetched.add(absolute_url)
+
+    content_type = headers.get("content-type", "")
+    if content_type.startswith("text/css") or target.suffix.lower() == ".css":
+        css_text = content.decode("utf-8", errors="replace")
+        target.write_text(css_text, encoding="utf-8")
+        mirror_original_css(css_text, absolute_url, target.parent, original_root, fetched)
+        return
+
+    target.write_bytes(content)
+
+
+def mirror_original_support_files(html_text: str, source_url: str, original_root: Path) -> None:
+    fetched: set[str] = set()
+
+    def queue_url(raw_url: str) -> None:
+        if not is_relative_url(raw_url):
+            return
+        mirror_original_asset(raw_url, source_url, original_root, original_root, fetched)
+
+    for match in ATTR_URL_RE.finditer(html_text):
+        queue_url(match.group("url").strip())
+
+    for match in SRCSET_RE.finditer(html_text):
+        for chunk in match.group("value").split(","):
+            segment = chunk.strip()
+            if not segment:
+                continue
+            queue_url(segment.split()[0])
+
+    for match in STYLE_ATTR_RE.finditer(html_text):
+        inline_css = match.group("value")
+        mirror_original_css(inline_css, source_url, original_root, original_root, fetched)
+
+
 def ensure_asset(
     url: str,
     base_url: str,
@@ -375,6 +454,7 @@ def mirror_snapshot(
 
     html_text = html_bytes.decode("utf-8", errors="replace")
     source_txt_path.write_text(html_text, encoding="utf-8")
+    mirror_original_support_files(html_text, source_url, original_dir)
     asset_cache: dict[str, AssetRecord] = {}
     reserved_paths: set[Path] = set()
     offline_html = rewrite_html(html_text, source_url, offline_dir, asset_cache, reserved_paths)
@@ -413,6 +493,7 @@ def collect_day_metadata(root: Path) -> dict[int, dict]:
 def render_index(root: Path) -> None:
     metadata = collect_day_metadata(root)
     captured_count = len(metadata)
+    missing_count = max(0, 30 - captured_count)
     latest = None
     if metadata:
         latest = max(metadata.values(), key=lambda item: item.get("archive_date", ""))
@@ -489,11 +570,11 @@ def render_index(root: Path) -> None:
         <div class="hero-stats">
           <div>
             <strong>{captured_count}</strong>
-            <span>ulozenych dni</span>
+            <span>stiahnutych dni</span>
           </div>
           <div>
-            <strong>30</strong>
-            <span>planovanych uloh</span>
+            <strong>{missing_count}</strong>
+            <span>chyba dni</span>
           </div>
         </div>
       </div>
