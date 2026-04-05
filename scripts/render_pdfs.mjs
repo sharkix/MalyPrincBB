@@ -54,7 +54,9 @@ async function renderPdf(browser, htmlPath) {
   });
 
   try {
-    await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "networkidle" });
+    const targetUrl = pathToFileURL(htmlPath);
+    targetUrl.searchParams.set("mpbb_render", "1");
+    await page.goto(targetUrl.href, { waitUntil: "networkidle" });
     await page.emulateMedia({ media: "screen" });
     await page.pdf({
       path: path.join(path.dirname(htmlPath), "page.pdf"),

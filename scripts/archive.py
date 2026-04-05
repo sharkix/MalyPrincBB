@@ -19,6 +19,9 @@ from zoneinfo import ZoneInfo
 
 
 USER_AGENT = "Mozilla/5.0 (compatible; MalyPrincBBArchiver/1.0; +https://github.com)"
+AUTH_PASSWORD_HASH = "8855e420fd3ce777fe0c2d0589c5d81036d06da4e7e4a52242a5549af3da566d"
+AUTH_SESSION_KEY = "mpbb-auth-v1"
+AUTH_BYPASS_PARAM = "mpbb_render"
 ATTR_URL_RE = re.compile(
     r'(?P<prefix>\b(?P<name>src|href|poster)\s*=\s*)(?P<quote>["\'])(?P<url>[^"\']+)(?P=quote)',
     re.IGNORECASE,
@@ -230,6 +233,105 @@ def absolutize_css_urls(css_text: str, base_url: str) -> str:
     return CSS_URL_RE.sub(replacer, css_text)
 
 
+def auth_gate_markup() -> str:
+    return f"""
+  <style id="mpbb-auth-style">
+    body {{
+      display: none !important;
+    }}
+  </style>
+  <script id="mpbb-auth-script">
+    (() => {{
+      const HASH = "{AUTH_PASSWORD_HASH}";
+      const KEY = "{AUTH_SESSION_KEY}";
+      const BYPASS_PARAM = "{AUTH_BYPASS_PARAM}";
+      const deniedHtml = `
+<main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
+  <div style="max-width:32rem;text-align:center;">
+    <h1 style="margin:0 0 12px;">Prístup zamietnutý</h1>
+    <p style="margin:0;">Bez správneho hesla sa obsah nezobrazí.</p>
+  </div>
+</main>`;
+
+      const reveal = () => {{
+        const style = document.getElementById("mpbb-auth-style");
+        if (style) {{
+          style.remove();
+        }}
+        if (document.body) {{
+          document.body.style.removeProperty("display");
+        }}
+      }};
+
+      const deny = () => {{
+        const showDenied = () => {{
+          if (!document.body) {{
+            return;
+          }}
+          document.body.innerHTML = deniedHtml;
+          document.body.style.display = "block";
+        }};
+        if (document.readyState === "loading") {{
+          document.addEventListener("DOMContentLoaded", showDenied, {{ once: true }});
+          return;
+        }}
+        showDenied();
+      }};
+
+      const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
+
+      async function sha256(value) {{
+        const bytes = new TextEncoder().encode(value);
+        const digest = await crypto.subtle.digest("SHA-256", bytes);
+        return Array.from(new Uint8Array(digest))
+          .map((byte) => byte.toString(16).padStart(2, "0"))
+          .join("");
+      }}
+
+      async function main() {{
+        if (shouldBypass()) {{
+          reveal();
+          return;
+        }}
+
+        try {{
+          if (window.sessionStorage.getItem(KEY) === HASH) {{
+            reveal();
+            return;
+          }}
+        }} catch (error) {{
+        }}
+
+        const password = window.prompt("Zadaj heslo pre Maly Princ BB");
+        if (password === null) {{
+          deny();
+          return;
+        }}
+
+        if (await sha256(password) === HASH) {{
+          try {{
+            window.sessionStorage.setItem(KEY, HASH);
+          }} catch (error) {{
+          }}
+          reveal();
+          return;
+        }}
+
+        window.alert("Nesprávne heslo.");
+        deny();
+      }}
+
+      main();
+    }})();
+  </script>""".strip("\n")
+
+
+def inject_auth_gate(html_text: str) -> str:
+    if 'id="mpbb-auth-script"' in html_text:
+        return html_text
+    return re.sub(r"</head>", f"{auth_gate_markup()}\n</head>", html_text, count=1, flags=re.IGNORECASE)
+
+
 def rewrite_original_html(html_text: str, source_url: str) -> str:
     def replace_attr(match: re.Match[str]) -> str:
         raw_url = match.group("url").strip()
@@ -263,7 +365,7 @@ def rewrite_original_html(html_text: str, source_url: str) -> str:
     html_text = SRCSET_RE.sub(replace_srcset, html_text)
     html_text = STYLE_ATTR_RE.sub(replace_style_attr, html_text)
     html_text = STYLE_TAG_RE.sub(replace_style_tag, html_text)
-    return html_text
+    return inject_auth_gate(html_text)
 
 
 def ensure_asset(
@@ -440,6 +542,7 @@ def mirror_snapshot(
     asset_cache: dict[str, AssetRecord] = {}
     reserved_paths: set[Path] = set()
     offline_html = rewrite_html(html_text, source_url, offline_dir, asset_cache, reserved_paths)
+    offline_html = inject_auth_gate(offline_html)
     (offline_dir / "index.html").write_text(offline_html, encoding="utf-8")
 
     metadata = {
@@ -540,6 +643,7 @@ def render_index(root: Path) -> None:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MalyPrincBB Archive</title>
   <link rel="stylesheet" href="assets/site.css">
+{auth_gate_markup()}
 </head>
 <body>
   <main class="page-shell">
