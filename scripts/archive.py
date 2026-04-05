@@ -476,18 +476,18 @@ def render_index(root: Path) -> None:
     for day in range(1, 31):
         item = metadata.get(day)
         if item:
-            title = escape(item.get("title") or f"Den {day:02d}")
+            title = escape(item.get("title") or f"Deň {day:02d}")
             archive_iso = escape(item.get("archive_date", ""))
             coord = escape(item.get("coord") or "-")
             cards.append(
                 f"""
         <article class="day-card is-ready">
-          <p class="day-label">Den {day:02d}</p>
+          <p class="day-label">Deň {day:02d}</p>
           <h2>{title}</h2>
-          <p class="card-meta">GC kod: {coord}</p>
-          <p class="card-meta">Archivovane: {archive_iso}</p>
+          <p class="card-meta">GC kód: {coord}</p>
+          <p class="card-meta">Archivované: {archive_iso}</p>
           <div class="card-links">
-            <a href="days/{day:02d}/original/">Povodne HTML</a>
+            <a href="days/{day:02d}/original/">Pôvodné HTML</a>
             <a href="days/{day:02d}/original/source.txt">Zdroj TXT</a>
             <a href="days/{day:02d}/offline/">Offline verzia</a>
             <a href="days/{day:02d}/offline/page.pdf">PDF</a>
@@ -499,9 +499,9 @@ def render_index(root: Path) -> None:
             cards.append(
                 f"""
         <article class="day-card is-pending">
-          <p class="day-label">Den {day:02d}</p>
-          <h2>Caka na archivaciu</h2>
-          <p class="card-meta">Workflow ulozi stranku po polnoci.</p>
+          <p class="day-label">Deň {day:02d}</p>
+          <h2>Čaká na archiváciu</h2>
+          <p class="card-meta">Workflow uloží stránku po polnoci.</p>
         </article>
 """
             )
@@ -511,11 +511,11 @@ def render_index(root: Path) -> None:
         latest_day = int(latest["day"])
         latest_block = f"""
       <section class="latest-box">
-        <p class="eyebrow">Posledny zachyteny den</p>
-        <h2>Den {latest_day:02d}</h2>
+        <p class="eyebrow">Posledný zachytený deň</p>
+        <h2>Deň {latest_day:02d}</h2>
         <p>{escape(latest.get("title") or "Maly Princ")}</p>
         <div class="card-links">
-          <a href="days/{latest_day:02d}/original/">Povodne HTML</a>
+          <a href="days/{latest_day:02d}/original/">Pôvodné HTML</a>
           <a href="days/{latest_day:02d}/original/source.txt">Zdroj TXT</a>
           <a href="days/{latest_day:02d}/offline/">Offline verzia</a>
           <a href="days/{latest_day:02d}/offline/page.pdf">PDF</a>
@@ -535,20 +535,20 @@ def render_index(root: Path) -> None:
   <main class="page-shell">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">GitHub Pages archiv</p>
+        <p class="eyebrow">GitHub Pages archív</p>
         <h1>Maly Princ BB</h1>
         <p class="intro">
-          Denne archivovana stranka <code>malyprinc.mikme.eu</code>
-          s dvoma verziami pre kazdy den: presne povodne HTML a lokalna offline kopia.
+          Denne archivovaná stránka <code>malyprinc.mikme.eu</code>
+          s dvoma verziami pre každý deň: presne pôvodné HTML a lokálna offline kópia.
         </p>
         <div class="hero-stats">
           <div>
             <strong>{captured_count}</strong>
-            <span>stiahnutych dni</span>
+            <span>stiahnutých dní</span>
           </div>
           <div>
             <strong>{missing_count}</strong>
-            <span>chyba dni</span>
+            <span>zostávajúcich dní</span>
           </div>
         </div>
       </div>
@@ -556,8 +556,8 @@ def render_index(root: Path) -> None:
     </section>
 
     <section class="info-strip">
-      <p>Automatizacia bezi kazdy den okolo 00:10 v casovej zone Europe/Bratislava.</p>
-      <p>Adresare <code>snapshots/YYYY-MM-DD</code> drzia dennu historiu, <code>days/01-30</code> drzia stabilne odkazy podla dna.</p>
+      <p>Automatizácia beží každý deň okolo 00:10 v časovej zóne Europe/Bratislava.</p>
+      <p>Adresáre <code>snapshots/YYYY-MM-DD</code> držia dennú históriu, <code>days/01-30</code> držia stabilné odkazy podľa dňa.</p>
     </section>
 
     <section class="day-grid">
