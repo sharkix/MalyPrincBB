@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/local/styles.css">
+  <title>Malý Princ</title>
+  <style id="mpbb-auth-style">
+    body {
+      display: none !important;
+    }
+  </style>
+  <script id="mpbb-auth-script">
+    (() => {
+      const HASH = "393dcd0db7da7052b586784827bc51a33e29aa5e40140ae92bc7131332461a18";
+      const KEY = "mpbb-auth-v1";
+      const BYPASS_PARAM = "mpbb_render";
+      const deniedHtml = `
+  <main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
+    <div style="max-width:32rem;text-align:center;">
+      <h1 style="margin:0 0 12px;">Prístup zamietnutý</h1>
+      <p style="margin:0;">Bez správneho hesla sa obsah nezobrazí.</p>
+    </div>
+  </main>`;
+
+      const reveal = () => {
+        const style = document.getElementById("mpbb-auth-style");
+        if (style) {
+          style.remove();
+        }
+        if (document.body) {
+          document.body.style.removeProperty("display");
+        }
+      };
+
+      const deny = () => {
+        const showDenied = () => {
+          if (!document.body) {
+            return;
+          }
+          document.body.innerHTML = deniedHtml;
+          document.body.style.display = "block";
+        };
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", showDenied, { once: true });
+          return;
+        }
+        showDenied();
+      };
+
+      const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
+
+      async function sha256(value) {
+        const bytes = new TextEncoder().encode(value);
+        const digest = await crypto.subtle.digest("SHA-256", bytes);
+        return Array.from(new Uint8Array(digest))
+          .map((byte) => byte.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      async function main() {
+        if (shouldBypass()) {
+          reveal();
+          return;
+        }
+
+        try {
+          if (window.sessionStorage.getItem(KEY) === HASH) {
+            reveal();
+            return;
+          }
+        } catch (error) {
+        }
+
+        const password = window.prompt("Zadaj heslo pre Maly Princ BB");
+        if (password === null) {
+          deny();
+          return;
+        }
+
+        if (await sha256(password) === HASH) {
+          try {
+            window.sessionStorage.setItem(KEY, HASH);
+          } catch (error) {
+          }
+          reveal();
+          return;
+        }
+
+        window.alert("Nesprávne heslo.");
+        deny();
+      }
+
+      main();
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 6</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #6</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC2D">&lt;GCAFC2D&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Malý princ cestoval už pekných pár dní, a tak sa rozhodol 
+<br>
+dať svojej rakete trošku času na "oddych". 
+<br>
+Vystúpil teda na najbližšej planéte, ale hneď to aj oľutoval. 
+<br>
+Všade navôkol sa povaľovali ohlodané kosti, batalióny čiernych lárv pochodovali v hustých šíkoch, 
+<br>
+holé lebky naňho cerili svoje zubiská, či aspoň čo z nich zostalo... a jeho premkol hrozný strach.
+<br>
+Čo za tvora mohlo toto všetko spôsobiť?
+<br>
+Bál sa ... a ani to nechcel zisťovať.
+<br>
+Rýchlo vybehol schodíkmi do svojej rakety a ešte aj keď naštartoval,
+<br>
+zuby mu klepotali od strachu a zimomriavky behali po chrbte.
+<br>
+<br>
+<br>
+<br><p><img src="assets/local/puzzle06_qqqwqr4f64fjukhgfxx6.png" style="width:800px" /></p>
+
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC2D">
+<img src="assets/www.certitudes.org/logo-c9f4ee451c.svg" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
