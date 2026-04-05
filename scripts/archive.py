@@ -405,6 +405,14 @@ def extract_coord(html_text: str) -> str | None:
     return match.group("code").upper()
 
 
+def slovak_plural_form(count: int, singular: str, few: str, many: str) -> str:
+    if count == 1:
+        return singular
+    if count % 10 in (2, 3, 4) and count % 100 not in (12, 13, 14):
+        return few
+    return many
+
+
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -468,6 +476,8 @@ def render_index(root: Path) -> None:
     metadata = collect_day_metadata(root)
     captured_count = len(metadata)
     missing_count = max(0, 30 - captured_count)
+    captured_label = slovak_plural_form(captured_count, "stiahnutý deň", "stiahnuté dni", "stiahnutých dní")
+    missing_label = slovak_plural_form(missing_count, "zostávajúci deň", "zostávajúce dni", "zostávajúcich dní")
     latest = None
     if metadata:
         latest = max(metadata.values(), key=lambda item: item.get("archive_date", ""))
@@ -544,11 +554,11 @@ def render_index(root: Path) -> None:
         <div class="hero-stats">
           <div>
             <strong>{captured_count}</strong>
-            <span>stiahnutých dní</span>
+            <span>{captured_label}</span>
           </div>
           <div>
             <strong>{missing_count}</strong>
-            <span>zostávajúcich dní</span>
+            <span>{missing_label}</span>
           </div>
         </div>
       </div>
