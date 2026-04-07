@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 8</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #8</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC2N">&lt;GCAFC2N&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Vesmír je nekonečný, ponúka nám množstvo tajomstiev a miest, ktoré sa mnohým môžu zdať zvláštne. 
+<br>
+Aj nasledujúca planéta bola mimoriadne výnimočná.
+<br>
+Malý princ na nej stretol obzvlášť sebecké bytosti. Každá jedna vlastnila nejakú vec, jedlo či oblečenie,
+<br> 
+ale ani jedna sa nechcela s tými ostanými o nič podeliť. 
+<br>
+A tak tam boli síce bohaté ale hladné bytosti, bytosti, ktoré síce mali čo jesť, ale bolo im zima,
+<br>
+lebo nemali oblečenie, bytosti, ktoré mali topánky, ale chýbali im do nich šnúrky...
+<br>
+Za žiadnu cenu sa nevedeli o nič podeliť. Rad radom žili svoje smutné sebecké životy a strážili si svoj majetok.
+<br>
+Na takejto planéte princ nemohol existovať. Nasadol do rakety, odpočítal: 1 - 2 - 3 a naštartoval.
+<br>
+<br>
+<br>
+223 - 227 - 2707 + 67 - 17 - 1229
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC2N">
+<img src="https://www.certitudes.org/logo?wp=GCAFC2N" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
