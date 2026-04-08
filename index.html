@@ -44,7 +44,10 @@
       <p style="margin:0 0 20px;text-align:center;line-height:1.5;">Zadaj heslo pre odomknutie archívu. Po úspešnom prihlásení bude platiť aj v ďalších taboch.</p>
       ${message ? `<p style="margin:0 0 16px;color:#9f2d2d;text-align:center;font-weight:600;">${message}</p>` : ""}
       <form id="mpbb-auth-form" style="display:grid;gap:12px;">
-        <input id="mpbb-auth-input" type="password" autocomplete="current-password" placeholder="Heslo" style="width:100%;padding:12px 14px;border:1px solid rgba(47,37,24,.25);border-radius:12px;background:#fffdf8;color:#2f2518;font:inherit;">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;">
+          <input id="mpbb-auth-input" type="password" autocomplete="current-password" placeholder="Heslo" style="width:100%;padding:12px 14px;border:1px solid rgba(47,37,24,.25);border-radius:12px;background:#fffdf8;color:#2f2518;font:inherit;">
+          <button id="mpbb-auth-toggle" type="button" aria-pressed="false" style="padding:12px 14px;border:1px solid rgba(47,37,24,.18);border-radius:12px;background:#efe5cf;color:#2f2518;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap;">Zobraziť</button>
+        </div>
         <button id="mpbb-auth-submit" type="submit" style="padding:12px 16px;border:0;border-radius:12px;background:#2f2518;color:#fffdf8;font:inherit;font-weight:700;cursor:pointer;">Odomknúť</button>
       </form>
     </div>
@@ -96,10 +99,21 @@
 
           const form = document.getElementById("mpbb-auth-form");
           const input = document.getElementById("mpbb-auth-input");
+          const toggle = document.getElementById("mpbb-auth-toggle");
           const submit = document.getElementById("mpbb-auth-submit");
 
           if (input instanceof HTMLInputElement) {
             input.focus();
+          }
+
+          if (toggle instanceof HTMLButtonElement && input instanceof HTMLInputElement) {
+            toggle.addEventListener("click", () => {
+              const revealPassword = input.type === "password";
+              input.type = revealPassword ? "text" : "password";
+              toggle.textContent = revealPassword ? "Skryť" : "Zobraziť";
+              toggle.setAttribute("aria-pressed", revealPassword ? "true" : "false");
+              input.focus();
+            });
           }
 
           if (!(form instanceof HTMLFormElement) || !(input instanceof HTMLInputElement)) {
