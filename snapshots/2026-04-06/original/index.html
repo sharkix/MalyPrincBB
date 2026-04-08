@@ -43,7 +43,7 @@
     <div style="width:min(100%,26rem);padding:32px 28px;border:1px solid rgba(47,37,24,.18);border-radius:18px;background:rgba(255,250,240,.96);box-shadow:0 16px 40px rgba(47,37,24,.12);">
       <h1 style="margin:0 0 10px;font-size:2rem;text-align:center;">Maly Princ BB</h1>
       <p style="margin:0 0 20px;text-align:center;line-height:1.5;">Zadaj heslo pre odomknutie archívu. Po úspešnom prihlásení bude platiť aj v ďalších taboch.</p>
-      ${message ? `<p style="margin:0 0 16px;color:#9f2d2d;text-align:center;font-weight:600;">${message}</p>` : ""}
+      <p style="margin:0 0 16px;color:#9f2d2d;text-align:center;font-weight:600;${message ? '' : 'display:none;'}">${message}</p>
       <form id="mpbb-auth-form" style="display:grid;gap:12px;">
         <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;">
           <input id="mpbb-auth-input" type="password" autocomplete="current-password" placeholder="Heslo" style="width:100%;padding:12px 14px;border:1px solid rgba(47,37,24,.25);border-radius:12px;background:#fffdf8;color:#2f2518;font:inherit;">
