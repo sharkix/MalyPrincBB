@@ -362,6 +362,11 @@ def auth_gate_markup(auth_hash: str, indent: str = "  ") -> str:
           return;
         }}
 
+        const style = document.getElementById("mpbb-auth-style");
+        if (style) {{
+          style.remove();
+        }}
+
         document.body.innerHTML = gateHtml(message);
         document.body.style.display = "block";
 

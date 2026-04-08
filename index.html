@@ -94,6 +94,11 @@
             return;
           }
 
+          const style = document.getElementById("mpbb-auth-style");
+          if (style) {
+            style.remove();
+          }
+
           document.body.innerHTML = gateHtml(message);
           document.body.style.display = "block";
 
