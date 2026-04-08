@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import imghdr
+try:
+    import imghdr
+except ModuleNotFoundError:  # Python 3.13+
+    imghdr = None
 import json
 import mimetypes
 import os
@@ -149,11 +152,12 @@ def guess_extension(url: str, headers: dict[str, str], content: bytes) -> str:
     if extension:
         return extension
 
-    image_type = imghdr.what(None, h=content)
-    if image_type == "jpeg":
-        return ".jpg"
-    if image_type:
-        return f".{image_type}"
+    if imghdr is not None:
+        image_type = imghdr.what(None, h=content)
+        if image_type == "jpeg":
+            return ".jpg"
+        if image_type:
+            return f".{image_type}"
     return ""
 
 
@@ -279,13 +283,17 @@ def auth_gate_markup(auth_hash: str, indent: str = "  ") -> str:
     const HASH = "{auth_hash}";
     const KEY = "{AUTH_SESSION_KEY}";
     const BYPASS_PARAM = "{AUTH_BYPASS_PARAM}";
-    const deniedHtml = `
-<main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
-  <div style="max-width:32rem;text-align:center;">
-    <h1 style="margin:0 0 12px;">Prístup zamietnutý</h1>
-    <p style="margin:0;">Bez správneho hesla sa obsah nezobrazí.</p>
-  </div>
-</main>`;
+    const storages = [];
+
+    try {{
+      storages.push(window.localStorage);
+    }} catch (error) {{
+    }}
+
+    try {{
+      storages.push(window.sessionStorage);
+    }} catch (error) {{
+    }}
 
     const reveal = () => {{
       const style = document.getElementById("mpbb-auth-style");
@@ -297,19 +305,42 @@ def auth_gate_markup(auth_hash: str, indent: str = "  ") -> str:
       }}
     }};
 
-    const deny = () => {{
-      const showDenied = () => {{
-        if (!document.body) {{
-          return;
+    const gateHtml = (message = "") => `
+<main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
+  <div style="width:min(100%,26rem);padding:32px 28px;border:1px solid rgba(47,37,24,.18);border-radius:18px;background:rgba(255,250,240,.96);box-shadow:0 16px 40px rgba(47,37,24,.12);">
+    <h1 style="margin:0 0 10px;font-size:2rem;text-align:center;">Maly Princ BB</h1>
+    <p style="margin:0 0 20px;text-align:center;line-height:1.5;">Zadaj heslo pre odomknutie archívu. Po úspešnom prihlásení bude platiť aj v ďalších taboch.</p>
+    ${{message ? `<p style="margin:0 0 16px;color:#9f2d2d;text-align:center;font-weight:600;">${{message}}</p>` : ""}}
+    <form id="mpbb-auth-form" style="display:grid;gap:12px;">
+      <input id="mpbb-auth-input" type="password" autocomplete="current-password" placeholder="Heslo" style="width:100%;padding:12px 14px;border:1px solid rgba(47,37,24,.25);border-radius:12px;background:#fffdf8;color:#2f2518;font:inherit;">
+      <button id="mpbb-auth-submit" type="submit" style="padding:12px 16px;border:0;border-radius:12px;background:#2f2518;color:#fffdf8;font:inherit;font-weight:700;cursor:pointer;">Odomknúť</button>
+    </form>
+  </div>
+</main>`;
+
+    const readStoredAuth = () => {{
+      for (const storage of storages) {{
+        try {{
+          const storedHash = storage.getItem(KEY);
+          if (storedHash === HASH) {{
+            return true;
+          }}
+          if (storedHash) {{
+            storage.removeItem(KEY);
+          }}
+        }} catch (error) {{
         }}
-        document.body.innerHTML = deniedHtml;
-        document.body.style.display = "block";
-      }};
-      if (document.readyState === "loading") {{
-        document.addEventListener("DOMContentLoaded", showDenied, {{ once: true }});
-        return;
       }}
-      showDenied();
+      return false;
+    }};
+
+    const persistAuth = () => {{
+      for (const storage of storages) {{
+        try {{
+          storage.setItem(KEY, HASH);
+        }} catch (error) {{
+        }}
+      }}
     }};
 
     const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
@@ -322,37 +353,76 @@ def auth_gate_markup(auth_hash: str, indent: str = "  ") -> str:
         .join("");
     }}
 
+    const showGate = (message = "") => {{
+      const render = () => {{
+        if (!document.body) {{
+          return;
+        }}
+
+        document.body.innerHTML = gateHtml(message);
+        document.body.style.display = "block";
+
+        const form = document.getElementById("mpbb-auth-form");
+        const input = document.getElementById("mpbb-auth-input");
+        const submit = document.getElementById("mpbb-auth-submit");
+
+        if (input instanceof HTMLInputElement) {{
+          input.focus();
+        }}
+
+        if (!(form instanceof HTMLFormElement) || !(input instanceof HTMLInputElement)) {{
+          return;
+        }}
+
+        form.addEventListener("submit", async (event) => {{
+          event.preventDefault();
+
+          if (submit instanceof HTMLButtonElement) {{
+            submit.disabled = true;
+          }}
+
+          const password = input.value;
+          if (!password) {{
+            showGate("Zadaj heslo.");
+            return;
+          }}
+
+          if (await sha256(password) === HASH) {{
+            persistAuth();
+            window.location.reload();
+            return;
+          }}
+
+          showGate("Nesprávne heslo.");
+        }});
+      }};
+
+      if (document.readyState === "loading") {{
+        document.addEventListener("DOMContentLoaded", render, {{ once: true }});
+        return;
+      }}
+
+      render();
+    }};
+
+    window.addEventListener("storage", (event) => {{
+      if (event.key === KEY && event.newValue === HASH) {{
+        window.location.reload();
+      }}
+    }});
+
     async function main() {{
       if (shouldBypass()) {{
         reveal();
         return;
       }}
 
-      try {{
-        if (window.sessionStorage.getItem(KEY) === HASH) {{
-          reveal();
-          return;
-        }}
-      }} catch (error) {{
-      }}
-
-      const password = window.prompt("Zadaj heslo pre Maly Princ BB");
-      if (password === null) {{
-        deny();
-        return;
-      }}
-
-      if (await sha256(password) === HASH) {{
-        try {{
-          window.sessionStorage.setItem(KEY, HASH);
-        }} catch (error) {{
-        }}
+      if (readStoredAuth()) {{
         reveal();
         return;
       }}
 
-      window.alert("Nesprávne heslo.");
-      deny();
+      showGate();
     }}
 
     main();
