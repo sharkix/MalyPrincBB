@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 10</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #10</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC31">&lt;GCAFC31&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Vesmírne putovanie zaviedlo malého prince na rôzne miesta, kde mohol objavovať kadečo neznáme.
+<br>
+Táto planéta mu ponúkla doslova celú spleť záhad.
+<br>
+Miesto, kde pristál malý princ, bolo zvláštne. Vystúpil z rakety
+<br>
+a vošiel priamo do spleti chodieb a chodbičiek. Poháňaný zvedavosťou nakúkal do rôznych uličiek...
+<br>
+až po chvíli zistil, že sa kompletne stratil. Na ktorúkoľvek stranu sa vydal, vždy prešiel iba do ďalšej z chodieb.
+<br>
+Pomaly sa stmievalo, naokolo nebolo ani živej duše a už začínal byť naozaj unavený.
+<br>
+Ako sa však dostať späť k rakete? 
+<br>
+Spomenul si na klbko, ktoré dostal ako darček, spomienku na priateľstvo z predchádzajúcej planéty
+<br>
+a postupne ho začal odvíjať.
+<br>
+Nechával tak za sebou stopu, čo mu pomohlo dostať sa späť k rakete.
+<br>
+Bol už poriadne unavený, v rakete stlačil už iba tlačidlo Štart a nechal sa v spánku unášať za ďalším dobrodružstvom.
+<br>
+<br>
+<br>
+<br><p><img src="https://malyprinc.mikme.eu/puzzle10_dsf1bgf5ljkffg5hslkls5h.jpg" style="width:800px" /></p>
+
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC31">
+<img src="https://www.certitudes.org/logo?wp=GCAFC31" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
