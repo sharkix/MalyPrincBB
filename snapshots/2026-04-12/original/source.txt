@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 12</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #12</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC3E">&lt;GCAFC3E&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Vesmír nám ukrýva rozličné zvláštne javy.
+<br>
+Jeden svet sklame ťa, druhý ti radosť spraví.
+<br>
+V jednom z tých dobrodružstiev, čuduj sa svete,
+<br>
+vám macko sám riadil premávku na planéte ;)
+<br>
+<br>
+<br>
+<br><p><img src="https://malyprinc.mikme.eu/puzzle12_b426d4hv24v6djy62ynu2kf4bd.png" style="width:800px" /></p>
+
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC3E">
+<img src="https://www.certitudes.org/logo?wp=GCAFC3E" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
