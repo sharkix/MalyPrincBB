@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 13</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #13</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC3K">&lt;GCAFC3K&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Planéty, planétky, asteroidy...malý princ si lietal nekonečným vesmírom,
+<br>
+až sa dostal na miesto, kde to všetko bzučalo...a rozvoniavalo medom...
+<br>
+Planétku pokrývala jedna obrovská rozkvitnutá lúka, kde sa preháňali včielky a dookola
+<br>
+tancovali tie svoje milé "tančeky", aby si dali vedieť, ktorý kvietok má ešte peľ,
+<br>
+ktorý už odkvitol a ktorý sa ešte len chystá kvitnúť...a tak dookola.
+<br>
+Malý princ chvíľu pozoroval všetok ten bzukot a haravaru, ale nechcel vyrušiť 
+<br>
+malé usilovné šikovníčky od ich každodennej práce, ktorá im navyše robila ešte aj radosť.
+<br>
+Rýchlo teda nasadol do rakety, ešte raz zakrúžil okolo planéty
+<br>
+a vyštartoval na ďalšiu.
+<br>
+<br>
+<br>
+<br><p><img src="https://malyprinc.mikme.eu/puzzle13_bkjvydhcs2t6gs4v62dcbfgvn.png" style="width:800px" /></p>
+
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC3K">
+<img src="https://www.certitudes.org/logo?wp=GCAFC3K" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
