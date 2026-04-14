@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 15</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #15</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC3W">&lt;GCAFC3W&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Ak platí, že život je hojdačka, tak toto dobrodružstvom je toho príkladom.
+<br>
+Z predchádzajúcej planéty, plnej fantázie a harmónie, sa malý princ dostal na celkom inú planétu.
+<br>
+Tu neboli žiadne víl, rusalky či jednorožce, ani tu nekvitli prvosienky a orgován, 
+<br>
+dokonca tu nezurčal ani potôčik.
+<br>
+Jediný zvuk, ktorý bolo počuť, bolo slabé bzučanie žiaroviek.
+<br>
+Táto planéta vyzerala, že ju opustilo všetko živé.
+<br>
+Všade blikali iba rôzne prístroje a postupne dohárajúce žiarovky, ktoré už mali zjavne to najlepšie za sebou.
+<br>
+...neúplné sekvencie informácií, postupne miznúci a znovu sa objavujúci signál a vypadávajúci obraz...
+<br>
+Toto všetko pôsobilo na malého princa tak strašidelne chladne a bezútešne,
+<br>
+že nečakal ani chvíľu a rýchlo odštartoval z tohto sveta bez života.
+<br>
+<br>
+<br>
+2367 - 2341567 - 2376 -236417 - 17423 - 3762 - 12457 - 56 - 173246 - 235614 - 231 - 2341675 - 237461 - 765431
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC3W">
+<img src="https://www.certitudes.org/logo?wp=GCAFC3W" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
