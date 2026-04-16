@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 17</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #17</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC40">&lt;GCAFC40&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Nuž veru, sen... Nielen malý princ má svoje sny.
+<br>
+Na planétke, kde bola práve doba ľadová a všade navôkol vládol ľad a sneh, stretol malý princ "kamoša" z iného príbehu. 
+<br>
+Pamätáte sa, ako v poslednej časti Doby ľadovej vyletela neposedná veverička so svojím žaluďom do vesmíru?
+<br>
+Tak prezradím vám, že tam nezostala len tak lietať. Studená príťažlivosť zasneženej planéty 
+<br>
+pritiahla k sebe žaluď a za ním sa, samozrejme, ponáhľala aj veverička.
+<br>
+A čo tam? Nuž túžba zasadiť žaluď bola veľká a malý princ prišiel práve vo chvíli,
+<br>
+keď veverička zadupávala žaluď do ľadovej štrbiny. 
+<br>
+...jeden, druhý, tretí úder...žaluď pomaly zapadal do praskliny a malý princ už počul iba slabé zapraskanie,
+<br>
+keď sa obrovská ľadová masa dala do pohybu.
+<br>
+Malý princ ledva stihol naskočiť do rakety, z ktorej už len s úžasom sledoval ďalšiu "ľadovú katastrofu",
+<br>
+ktorú spustil jeden malý žaluď.
+<br>
+...nuž, žalude, či už veľké alebo malé, zvyknú narobiť poriadne starosti ;)
+<br>
+
+<br><p></p>
+<a><img src="https://malyprinc.mikme.eu/puzzle17_sfdsfgtr646116dryhgf.png" width="800"></a>
+</p>
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC40">
+<img src="https://www.certitudes.org/logo?wp=GCAFC40" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
