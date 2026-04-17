@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 18</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #18</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC44">&lt;GCAFC44&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Prečo je tu taká tma? 
+<br>
+- spýtal sa malý princ, keď vystúpil z rakety, ...ale nikto mu neodpovedal...
+<br>
+A kde sú všetci?
+<br>
+Urobil krok dopredu a zakopol o čosi, čo nevedel definovať.
+<br>
+Malý princ si čupol, aby zistil, či niekomu neublížil, ale nahmatal iba kamene.
+<br>
+Keď sa ich dotýkal, pocítil, že majú nerovnomerný povrch 
+<br>
+- pokrývali ho zvláštne okrúhle otvory, ktoré mu pod prstami tvorili zvláštne obrazce...
+<br>
+Malý princ nevedel, čo tieto čudné okrúhle a trochu vystupujúce otvory znamenajú.
+<br>
+Možno sú to vchody pre maličkých obyvateľov tejto planéty, pomyslel si.
+<br>
+V kontexte svojho uvažovania o možnosti existencie miniatúrnej spoločnosti
+<br>
+nechcel vyľakať žiadne bytosti, nastúpil do svojej rakety a ponáhľal sa preč.  
+<br>
+<br>
+<br>
+<br><p><img src="https://malyprinc.mikme.eu/puzzle18_5dsd5gs2htyegjfv5t3ssehsa.png" style="width:800px" /></p>
+
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC44">
+<img src="https://www.certitudes.org/logo?wp=GCAFC44" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
