@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 19</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #19</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC46">&lt;GCAFC46&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+<br>
+Keď si tak malý princ lietal z planéty na planétu, všimol si, 
+<br>
+že niektoré z planét majú aj telesá, ktoré okolo nich obiehajú.
+<br>
+Niektoré ich mali dve, niektoré tri a niektoré dvanásť. 
+<br>
+Táto planéta mala iba jedno - svoj mesiac. Ten sa hrdo točil okolo planéty a okolo svojej osi.
+<br>
+Dokázal sa otočiť až 369-krát v priebehu jedného dňa a vytváral tak tajomné obrazce, 
+<br>
+ktoré ste mohli pozorovať iba z planéty. Malý princ chvíľu pozoroval toto zaujímavé divadlo,
+<br>
+no uvedomil si, že vo vesmíre má ešte stále čo objavovať a vydal sa na ďalšiu cestu.
+<br>
+<br>
+<br>
+D2 E3 G6 C4 - H3 D3 I9 H7
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC46">
+<img src="https://www.certitudes.org/logo?wp=GCAFC46" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
