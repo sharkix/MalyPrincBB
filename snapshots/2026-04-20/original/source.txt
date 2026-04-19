@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 20</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #20</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC49">&lt;GCAFC49&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+<br>
+Malá planétka, ku ktorej sa malý princ blížil tentokrát, bola obklopená farebnými dymovými obláčikmi:
+<br>
+zelená, ružová, žltá...
+<br>
+Raketa malého princa sa nakoniec vynorila z pestrofarebnej hmly a pristála.
+<br>
+Pred malým cestovateľom sa objavil prazvláštny obraz:
+<br>
+Malý strapatý mužíček tu pobehoval dookola a stále niečo vykrikoval.
+<br>
+Potom zmizol za veľkými kovovými dverami a o chvíľu sa vynoril s tajomným výrazom na tvári...a znovu zmizol.
+<br>
+Malý princ sa trochu vydesil a keď sa toto opakovalo niekoľkokrát za sebou, pobral sa radšej preč.
+<br>
+Veď čo ak by to, čo sa skrývalo za dverami, bolo nebezpečné?
+<br>
+<br>
+<br>
+7:Beoinyn    63-92:Kobra 
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC49">
+<img src="https://www.certitudes.org/logo?wp=GCAFC49" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
