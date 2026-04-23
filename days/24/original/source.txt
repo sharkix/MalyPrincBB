@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 24</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #24</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC4R">&lt;GCAFC4R&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Nuž, malý cestovateľ na svojej ceste mohol spoznávať rôzne tvory a potvorky,
+<br>
+ktorým rozumel niekedy viac, inokedy menej.
+<br>
+Na tejto planétke však nerozprávali žiadne tvory a ani potvorky,
+<br>
+ale boli to práve kamene, ktoré dokázali medzi sebou komunikovať.
+<br>
+Skaly, kamene, kamienky alebo, ak chcete, "šutre", dokázali diskutovať o veciach,
+<br>
+za ktoré by sa nemusel hanbiť ani moderný filozof.
+<br>
+Malý princ bol ohromený, chcel sa zapojiť do zaujímavej debaty,
+<br>
+ale pravidlá tejto "kamennej diskusie" mali svoj poriadok.
+<br>
+Musel sa prihlásiť o slovo. Malý princ sa rozhodol aj predstaviť sa.
+<br>
+Kamene však, napriek svojej filozofickej "nadupanosti" nepoznali svoje mená, nepotrebovali ich.
+<br>
+A tak malý princ musel to svoje vyhláskovať, aby mu rozumeli.
+<br>
+Nuž spustil pekne po poradí: M A L Ý   P R I N C.
+<br>
+Prekvapené kamene si vypočuli jeho názory, uznanlivo zahmkali a následne rozvinuli ďalšiu debatu.
+<br>
+... a malý princ? Nuž, filozofia bola pre neho zaujímavá, ale vesmír ešte viac.
+<br>
+Rozlúčil sa teda s múdrymi kameňmi a vydal sa za ďalším dobrodružstvom.
+<br>
+<br>
+<br>
+ýnýcrir-Mcncrl
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC4R">
+<img src="https://www.certitudes.org/logo?wp=GCAFC4R" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
