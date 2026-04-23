@@ -44,10 +44,26 @@ jobs:
           fi
 
           ARCHIVE_DATE="$(TZ=Europe/Bratislava date +%F)"
+          TODAY_DAY="$(TZ=Europe/Bratislava date +%d)"
+
           if [ -d "snapshots/$ARCHIVE_DATE" ]; then
             echo "Archive for $ARCHIVE_DATE already exists, skipping duplicate scheduled run."
             echo "run=false" >> "$GITHUB_OUTPUT"
             exit 0
+          fi
+
+          if [ -f "days/30/meta.json" ]; then
+            if [ "$TODAY_DAY" = "31" ]; then
+              echo "All numbered days are 01-30, skipping day 31."
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            if [ -f "days/$TODAY_DAY/meta.json" ]; then
+              echo "Day $TODAY_DAY is already archived, skipping post-finale retry."
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
           fi
 
           echo "run=true" >> "$GITHUB_OUTPUT"
