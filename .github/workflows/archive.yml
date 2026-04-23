@@ -28,7 +28,12 @@ jobs:
       MPBB_SITE_PASSWORD: ${{ secrets.MPBB_SITE_PASSWORD }}
 
     steps:
-      - name: Check local midnight in Bratislava
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decide whether today's archive is still missing
         id: gate
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -38,21 +43,16 @@ jobs:
             exit 0
           fi
 
-          LOCAL_HOUR="$(TZ=Europe/Bratislava date +%H)"
-          if [ "$LOCAL_HOUR" != "00" ]; then
+          ARCHIVE_DATE="$(TZ=Europe/Bratislava date +%F)"
+          if [ -d "snapshots/$ARCHIVE_DATE" ]; then
+            echo "Archive for $ARCHIVE_DATE already exists, skipping duplicate scheduled run."
             echo "run=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           echo "run=true" >> "$GITHUB_OUTPUT"
-          echo "archive_date=$(TZ=Europe/Bratislava date +%F)" >> "$GITHUB_OUTPUT"
+          echo "archive_date=$ARCHIVE_DATE" >> "$GITHUB_OUTPUT"
           echo "mode=archive-now" >> "$GITHUB_OUTPUT"
-
-      - name: Check out repository
-        if: steps.gate.outputs.run == 'true'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         if: steps.gate.outputs.run == 'true'

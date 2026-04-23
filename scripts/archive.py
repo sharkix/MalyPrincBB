@@ -12,6 +12,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import textwrap
 from dataclasses import dataclass
@@ -98,7 +99,7 @@ def archive_date(args: argparse.Namespace) -> date:
     return datetime.now(ZoneInfo(args.timezone)).date()
 
 
-def fetch_url(url: str) -> tuple[bytes, dict[str, str]]:
+def fetch_url(url: str, referer: str | None = None) -> tuple[bytes, dict[str, str]]:
     with tempfile.TemporaryDirectory() as tmp_dir:
         headers_path = Path(tmp_dir) / "headers.txt"
         body_path = Path(tmp_dir) / "body.bin"
@@ -111,8 +112,10 @@ def fetch_url(url: str) -> tuple[bytes, dict[str, str]]:
             str(headers_path),
             "-o",
             str(body_path),
-            url,
         ]
+        if referer:
+            cmd.extend(["-e", referer])
+        cmd.append(url)
         subprocess.run(cmd, check=True)
         headers = parse_headers(headers_path.read_text(encoding="utf-8", errors="replace"))
         return body_path.read_bytes(), headers
@@ -522,6 +525,7 @@ def rewrite_original_html(html_text: str, source_url: str, auth_hash: str) -> st
 def ensure_asset(
     url: str,
     base_url: str,
+    source_host: str,
     offline_root: Path,
     asset_cache: dict[str, AssetRecord],
     reserved_paths: set[Path],
@@ -537,8 +541,14 @@ def ensure_asset(
     if absolute_url in asset_cache:
         return asset_cache[absolute_url]
 
-    content, headers = fetch_url(absolute_url)
-    source_host = urlparse(base_url).netloc
+    try:
+        content, headers = fetch_url(absolute_url, referer=base_url)
+    except subprocess.CalledProcessError as exc:
+        if parsed.netloc == source_host:
+            raise
+        print(f"Warning: skipping external asset fetch for {absolute_url}: {exc}", file=sys.stderr)
+        return None
+
     host_alias = "local" if parsed.netloc == source_host else None
     rel_path = target_rel_path(absolute_url, headers, content, reserved_paths, host_alias=host_alias)
     reserved_paths.add(rel_path)
@@ -554,7 +564,15 @@ def ensure_asset(
 
     if record.content_type.startswith("text/css") or rel_path.suffix.lower() == ".css":
         css_text = content.decode("utf-8", errors="replace")
-        rewritten = rewrite_css(css_text, absolute_url, record.full_path.parent, offline_root, asset_cache, reserved_paths)
+        rewritten = rewrite_css(
+            css_text,
+            absolute_url,
+            source_host,
+            record.full_path.parent,
+            offline_root,
+            asset_cache,
+            reserved_paths,
+        )
         full_path.write_text(rewritten, encoding="utf-8")
     else:
         full_path.write_bytes(content)
@@ -569,6 +587,7 @@ def relative_url(from_dir: Path, to_path: Path) -> str:
 def rewrite_css(
     css_text: str,
     base_url: str,
+    source_host: str,
     current_dir: Path,
     offline_root: Path,
     asset_cache: dict[str, AssetRecord],
@@ -576,7 +595,7 @@ def rewrite_css(
 ) -> str:
     def replacer(match: re.Match[str]) -> str:
         raw_url = match.group("url").strip()
-        asset = ensure_asset(raw_url, base_url, offline_root, asset_cache, reserved_paths)
+        asset = ensure_asset(raw_url, base_url, source_host, offline_root, asset_cache, reserved_paths)
         if not asset:
             return match.group(0)
         local_path = relative_url(current_dir, asset.full_path)
@@ -601,11 +620,11 @@ def rewrite_html(
             return match.group(0)
         absolute_url = urljoin(source_url, raw_url)
         if attr_name in ("src", "poster"):
-            asset = ensure_asset(absolute_url, source_url, offline_root, asset_cache, reserved_paths)
+            asset = ensure_asset(absolute_url, source_url, source_host, offline_root, asset_cache, reserved_paths)
         else:
             if not is_downloadable_href(absolute_url, source_host):
                 return match.group(0)
-            asset = ensure_asset(absolute_url, source_url, offline_root, asset_cache, reserved_paths)
+            asset = ensure_asset(absolute_url, source_url, source_host, offline_root, asset_cache, reserved_paths)
         if not asset:
             return match.group(0)
         local = asset.rel_path.as_posix()
@@ -619,7 +638,7 @@ def rewrite_html(
                 continue
             tokens = segment.split()
             raw_url = tokens[0]
-            asset = ensure_asset(raw_url, source_url, offline_root, asset_cache, reserved_paths)
+            asset = ensure_asset(raw_url, source_url, source_host, offline_root, asset_cache, reserved_paths)
             if asset:
                 tokens[0] = asset.rel_path.as_posix()
             parts.append(" ".join(tokens))
@@ -627,7 +646,7 @@ def rewrite_html(
 
     def replace_style(match: re.Match[str]) -> str:
         current = match.group("value")
-        rewritten = rewrite_css(current, source_url, offline_root, offline_root, asset_cache, reserved_paths)
+        rewritten = rewrite_css(current, source_url, source_host, offline_root, offline_root, asset_cache, reserved_paths)
         return f'{match.group("prefix")}{match.group("quote")}{rewritten}{match.group("quote")}'
 
     html_text = ATTR_URL_RE.sub(replace_attr, html_text)
