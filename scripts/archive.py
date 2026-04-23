@@ -45,7 +45,7 @@ STYLE_ATTR_RE = re.compile(
 )
 STYLE_TAG_RE = re.compile(r"(?P<open><style\b[^>]*>)(?P<value>.*?)(?P<close></style>)", re.IGNORECASE | re.DOTALL)
 CSS_URL_RE = re.compile(r"url\((?P<quote>['\"]?)(?P<url>[^)\"']+)(?P=quote)\)")
-DAY_RE = re.compile(r"Deň:\s*(?:</?strong>\s*)?(?P<day>\d{1,2})", re.IGNORECASE)
+DAY_RE = re.compile(r"Deň:\s*(?:</?strong>\s*)?(?P<day>\d{1,2}|bonus)", re.IGNORECASE)
 TITLE_RE = re.compile(r"<title>(?P<title>.*?)</title>", re.IGNORECASE | re.DOTALL)
 COORD_RE = re.compile(r"coord\.info/(?P<code>[A-Z0-9]+)", re.IGNORECASE)
 RESOURCE_SUFFIXES = {
@@ -70,6 +70,9 @@ RESOURCE_SUFFIXES = {
     ".webm",
     ".ogg",
 }
+BONUS_DAY_KEY = "BONUS"
+DAY_KEYS = [f"{day:02d}" for day in range(1, 31)] + [BONUS_DAY_KEY]
+TOTAL_ARCHIVE_ITEMS = len(DAY_KEYS)
 
 
 @dataclass
@@ -655,11 +658,42 @@ def rewrite_html(
     return html_text
 
 
-def extract_day(html_text: str, fallback: int) -> int:
+def normalize_day_key(value: str | int | None) -> str | None:
+    if value is None:
+        return None
+    if isinstance(value, int):
+        if 1 <= value <= 30:
+            return f"{value:02d}"
+        if value == 31:
+            return BONUS_DAY_KEY
+        return None
+
+    text = str(value).strip().upper()
+    if text == BONUS_DAY_KEY:
+        return BONUS_DAY_KEY
+    if text.isdigit():
+        return normalize_day_key(int(text))
+    return None
+
+
+def fallback_day_key(archive_day: date) -> str:
+    normalized = normalize_day_key(archive_day.day)
+    if normalized:
+        return normalized
+    return f"{archive_day.day:02d}"
+
+
+def archive_item_label(day_key: str) -> str:
+    if day_key == BONUS_DAY_KEY:
+        return BONUS_DAY_KEY
+    return f"Deň {day_key}"
+
+
+def extract_day_key(html_text: str, fallback: str) -> str:
     match = DAY_RE.search(html_text)
     if not match:
         return fallback
-    return int(match.group("day"))
+    return normalize_day_key(match.group("day")) or fallback
 
 
 def extract_title(html_text: str) -> str:
@@ -694,7 +728,7 @@ def mirror_snapshot(
     html_bytes: bytes,
     source_url: str,
     snapshot_root: Path,
-    detected_day: int,
+    detected_day_key: str,
     archive_iso: str,
     auth_hash: str,
 ) -> dict:
@@ -718,7 +752,8 @@ def mirror_snapshot(
 
     metadata = {
         "archive_date": archive_iso,
-        "day": detected_day,
+        "day": 31 if detected_day_key == BONUS_DAY_KEY else int(detected_day_key),
+        "day_key": detected_day_key,
         "title": extract_title(html_text),
         "coord": extract_coord(html_text),
         "source_url": source_url,
@@ -737,44 +772,47 @@ def replace_tree(target: Path, source: Path) -> None:
     shutil.copytree(source, target)
 
 
-def collect_day_metadata(root: Path) -> dict[int, dict]:
-    result: dict[int, dict] = {}
-    for day in range(1, 31):
-        meta_path = root / "days" / f"{day:02d}" / "meta.json"
+def collect_day_metadata(root: Path) -> dict[str, dict]:
+    result: dict[str, dict] = {}
+    for day_key in DAY_KEYS:
+        meta_path = root / "days" / day_key / "meta.json"
         if meta_path.exists():
-            result[day] = json.loads(meta_path.read_text(encoding="utf-8"))
+            item = json.loads(meta_path.read_text(encoding="utf-8"))
+            item["day_key"] = normalize_day_key(item.get("day_key")) or normalize_day_key(item.get("day")) or day_key
+            result[day_key] = item
     return result
 
 
 def render_index(root: Path, auth_hash: str) -> None:
     metadata = collect_day_metadata(root)
     captured_count = len(metadata)
-    missing_count = max(0, 30 - captured_count)
-    captured_label = slovak_plural_form(captured_count, "stiahnutý deň", "stiahnuté dni", "stiahnutých dní")
-    missing_label = slovak_plural_form(missing_count, "zostávajúci deň", "zostávajúce dni", "zostávajúcich dní")
+    missing_count = max(0, TOTAL_ARCHIVE_ITEMS - captured_count)
+    captured_label = slovak_plural_form(captured_count, "stiahnuté zadanie", "stiahnuté zadania", "stiahnutých zadaní")
+    missing_label = slovak_plural_form(missing_count, "zostávajúce zadanie", "zostávajúce zadania", "zostávajúcich zadaní")
     latest = None
     if metadata:
         latest = max(metadata.values(), key=lambda item: item.get("archive_date", ""))
 
     cards: list[str] = []
-    for day in range(1, 31):
-        item = metadata.get(day)
+    for day_key in DAY_KEYS:
+        item = metadata.get(day_key)
+        label = archive_item_label(day_key)
         if item:
-            title = escape(item.get("title") or f"Deň {day:02d}")
+            title = escape(item.get("title") or label)
             archive_iso = escape(item.get("archive_date", ""))
             coord = escape(item.get("coord") or "-")
             cards.append(
                 f"""
         <article class="day-card is-ready">
-          <p class="day-label">Deň {day:02d}</p>
+          <p class="day-label">{label}</p>
           <h2>{title}</h2>
           <p class="card-meta">GC kód: {coord}</p>
           <p class="card-meta">Archivované: {archive_iso}</p>
           <div class="card-links">
-            <a href="days/{day:02d}/original/">Pôvodné HTML</a>
-            <a href="days/{day:02d}/original/source.txt">Zdroj TXT</a>
-            <a href="days/{day:02d}/offline/">Offline verzia</a>
-            <a href="days/{day:02d}/offline/page.pdf">PDF</a>
+            <a href="days/{day_key}/original/">Pôvodné HTML</a>
+            <a href="days/{day_key}/original/source.txt">Zdroj TXT</a>
+            <a href="days/{day_key}/offline/">Offline verzia</a>
+            <a href="days/{day_key}/offline/page.pdf">PDF</a>
           </div>
         </article>
 """
@@ -783,7 +821,7 @@ def render_index(root: Path, auth_hash: str) -> None:
             cards.append(
                 f"""
         <article class="day-card is-pending">
-          <p class="day-label">Deň {day:02d}</p>
+          <p class="day-label">{label}</p>
           <h2>Čaká na archiváciu</h2>
           <p class="card-meta">Workflow uloží stránku po polnoci.</p>
         </article>
@@ -792,17 +830,18 @@ def render_index(root: Path, auth_hash: str) -> None:
 
     latest_block = ""
     if latest:
-        latest_day = int(latest["day"])
+        latest_day_key = normalize_day_key(latest.get("day_key")) or normalize_day_key(latest.get("day")) or BONUS_DAY_KEY
+        latest_label = archive_item_label(latest_day_key)
         latest_block = f"""
       <section class="latest-box">
-        <p class="eyebrow">Posledný zachytený deň</p>
-        <h2>Deň {latest_day:02d}</h2>
+        <p class="eyebrow">Posledný zachytený záznam</p>
+        <h2>{latest_label}</h2>
         <p>{escape(latest.get("title") or "Maly Princ")}</p>
         <div class="card-links">
-          <a href="days/{latest_day:02d}/original/">Pôvodné HTML</a>
-          <a href="days/{latest_day:02d}/original/source.txt">Zdroj TXT</a>
-          <a href="days/{latest_day:02d}/offline/">Offline verzia</a>
-          <a href="days/{latest_day:02d}/offline/page.pdf">PDF</a>
+          <a href="days/{latest_day_key}/original/">Pôvodné HTML</a>
+          <a href="days/{latest_day_key}/original/source.txt">Zdroj TXT</a>
+          <a href="days/{latest_day_key}/offline/">Offline verzia</a>
+          <a href="days/{latest_day_key}/offline/page.pdf">PDF</a>
         </div>
       </section>
 """
@@ -824,7 +863,7 @@ def render_index(root: Path, auth_hash: str) -> None:
         <h1>Maly Princ BB</h1>
         <p class="intro">
           Denne archivovaná stránka <code>malyprinc.mikme.eu</code>
-          s dvoma verziami pre každý deň: presne pôvodné HTML a lokálna offline kópia.
+          s dvoma verziami pre každý deň aj bonus: presne pôvodné HTML a lokálna offline kópia.
         </p>
         <div class="hero-stats">
           <div>
@@ -842,7 +881,7 @@ def render_index(root: Path, auth_hash: str) -> None:
 
     <section class="info-strip">
       <p>Automatizácia beží každý deň okolo 00:10 v časovej zóne Europe/Bratislava.</p>
-      <p>Adresáre <code>snapshots/YYYY-MM-DD</code> držia dennú históriu, <code>days/01-30</code> držia stabilné odkazy podľa dňa.</p>
+      <p>Adresáre <code>snapshots/YYYY-MM-DD</code> držia dennú históriu, <code>days/01-30</code> a <code>days/BONUS</code> držia stabilné odkazy.</p>
     </section>
 
     <section class="day-grid">
@@ -867,12 +906,12 @@ def run_archive(args: argparse.Namespace) -> dict | None:
     archive_iso = archive_day.isoformat()
     html_bytes, _headers = fetch_url(args.source_url)
     html_text = html_bytes.decode("utf-8", errors="replace")
-    detected_day = extract_day(html_text, archive_day.day)
+    detected_day_key = extract_day_key(html_text, fallback_day_key(archive_day))
     snapshot_root = root / "snapshots" / archive_iso
-    metadata = mirror_snapshot(html_bytes, args.source_url, snapshot_root, detected_day, archive_iso, auth_hash)
+    metadata = mirror_snapshot(html_bytes, args.source_url, snapshot_root, detected_day_key, archive_iso, auth_hash)
 
-    if 1 <= detected_day <= 30:
-        day_root = root / "days" / f"{detected_day:02d}"
+    if detected_day_key in DAY_KEYS:
+        day_root = root / "days" / detected_day_key
         day_root.mkdir(parents=True, exist_ok=True)
         replace_tree(day_root / "original", snapshot_root / "original")
         replace_tree(day_root / "offline", snapshot_root / "offline")
