@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 23</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #23</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC4N">&lt;GCAFC4N&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Zelená planéta upútala malého princa už z diaľky. Zelené hory, zelené lúky, všade samá príroda...
+<br>
+...a dve zvláštne postavičky.
+<br>
+Prvá, ktorú malý princ oslovil, sa mu predstavila ako Hedviga -
+<br>
+- vyparádená oslia slečna pobiehala všade dookola a vydávala príkazy pohoďákovi Froggymu:
+<br>
+„Tam to nebude!!! Vravela som ti, musíš...!”
+<br>
+Froggy evidentne nemusel, ...sem tam v pohode prepočul "dobre mienenú inštrukciu" 
+<br>
+a celkom pokojne tu vytiahol zaujímavú krabičku spod skál, tam vyliezol na strom, či ponoril sa do jazierka...
+<br>
+...a potom sa vždy obaja tešili a skákali od radosti...a tak to išlo ďalej:
+<br>
+hľadanie, nachádzanie, zapisovanie ;)
+<br>
+Po Hedviginom a Froggyho zanietenom vysvetľovaní o zaujímavej hre malý princ len začudovane pokrútil hlavou
+<br>
+a nechal tých dvoch milých neškodných "bláznov" ďalej prekutrávať planétu
+<br>
+a lámať si hlavu nad hádankami. 
+<br>
+<br>
+<br><p></p>
+1-51 5-10 10-67 11-27 7-100 4-22 1-7 3-21 6-35 11-30 11-57 12-2 1-44 10-4 3-10 8-29 4-15 6-77 10-19 5-43
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC4N">
+<img src="https://www.certitudes.org/logo?wp=GCAFC4N" title="namiesto medzery zadaj podtržník" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
