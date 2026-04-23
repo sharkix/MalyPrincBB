@@ -52,15 +52,15 @@ jobs:
             exit 0
           fi
 
-          if [ -f "days/30/meta.json" ]; then
+          if [ -f "days/BONUS/meta.json" ]; then
             if [ "$TODAY_DAY" = "31" ]; then
-              echo "All numbered days are 01-30, skipping day 31."
+              echo "Bonus is already archived, skipping day 31."
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
 
             if [ -f "days/$TODAY_DAY/meta.json" ]; then
-              echo "Day $TODAY_DAY is already archived, skipping post-finale retry."
+              echo "Day $TODAY_DAY is already archived, skipping post-bonus retry."
               echo "run=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
