@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://malyprinc.mikme.eu/styles.css">
+  <title>Malý Princ</title>
+  <style id="mpbb-auth-style">
+    body {
+      display: none !important;
+    }
+  </style>
+  <script id="mpbb-auth-script">
+    (() => {
+      const HASH = "b4d13eb2bd00c7b4f0002a7deae4f48d9c4f11e4592298daa6475aecc5475520";
+      const KEY = "mpbb-auth-v1";
+      const BYPASS_PARAM = "mpbb_render";
+      const storages = [];
+
+      try {
+        storages.push(window.localStorage);
+      } catch (error) {
+      }
+
+      try {
+        storages.push(window.sessionStorage);
+      } catch (error) {
+      }
+
+      const reveal = () => {
+        const style = document.getElementById("mpbb-auth-style");
+        if (style) {
+          style.remove();
+        }
+        if (document.body) {
+          document.body.style.removeProperty("display");
+        }
+      };
+
+      const gateHtml = (message = "") => `
+  <main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f0e1;color:#2f2518;font-family:Georgia,'Times New Roman',serif;">
+    <div style="width:min(100%,26rem);padding:32px 28px;border:1px solid rgba(47,37,24,.18);border-radius:18px;background:rgba(255,250,240,.96);box-shadow:0 16px 40px rgba(47,37,24,.12);">
+      <h1 style="margin:0 0 10px;font-size:2rem;text-align:center;">Maly Princ BB</h1>
+      <p style="margin:0 0 20px;text-align:center;line-height:1.5;">Zadaj heslo pre odomknutie archívu. Po úspešnom prihlásení bude platiť aj v ďalších taboch.</p>
+      <p style="margin:0 0 16px;color:#9f2d2d;text-align:center;font-weight:600;${message ? '' : 'display:none;'}">${message}</p>
+      <form id="mpbb-auth-form" style="display:grid;gap:12px;">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;">
+          <input id="mpbb-auth-input" type="password" autocomplete="current-password" placeholder="Heslo" style="width:100%;padding:12px 14px;border:1px solid rgba(47,37,24,.25);border-radius:12px;background:#fffdf8;color:#2f2518;font:inherit;">
+          <button id="mpbb-auth-toggle" type="button" aria-pressed="false" style="padding:12px 14px;border:1px solid rgba(47,37,24,.18);border-radius:12px;background:#efe5cf;color:#2f2518;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap;">Zobraziť</button>
+        </div>
+        <button id="mpbb-auth-submit" type="submit" style="padding:12px 16px;border:0;border-radius:12px;background:#2f2518;color:#fffdf8;font:inherit;font-weight:700;cursor:pointer;">Odomknúť</button>
+      </form>
+    </div>
+  </main>`;
+
+      const readStoredAuth = () => {
+        for (const storage of storages) {
+          try {
+            const storedHash = storage.getItem(KEY);
+            if (storedHash === HASH) {
+              return true;
+            }
+            if (storedHash) {
+              storage.removeItem(KEY);
+            }
+          } catch (error) {
+          }
+        }
+        return false;
+      };
+
+      const persistAuth = () => {
+        for (const storage of storages) {
+          try {
+            storage.setItem(KEY, HASH);
+          } catch (error) {
+          }
+        }
+      };
+
+      const shouldBypass = () => new URLSearchParams(window.location.search).has(BYPASS_PARAM);
+
+      async function sha256(value) {
+        const bytes = new TextEncoder().encode(value);
+        const digest = await crypto.subtle.digest("SHA-256", bytes);
+        return Array.from(new Uint8Array(digest))
+          .map((byte) => byte.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      const showGate = (message = "") => {
+        const render = () => {
+          if (!document.body) {
+            return;
+          }
+
+          const style = document.getElementById("mpbb-auth-style");
+          if (style) {
+            style.remove();
+          }
+
+          document.body.innerHTML = gateHtml(message);
+          document.body.style.display = "block";
+
+          const form = document.getElementById("mpbb-auth-form");
+          const input = document.getElementById("mpbb-auth-input");
+          const toggle = document.getElementById("mpbb-auth-toggle");
+          const submit = document.getElementById("mpbb-auth-submit");
+
+          if (input instanceof HTMLInputElement) {
+            input.focus();
+          }
+
+          if (toggle instanceof HTMLButtonElement && input instanceof HTMLInputElement) {
+            toggle.addEventListener("click", () => {
+              const revealPassword = input.type === "password";
+              input.type = revealPassword ? "text" : "password";
+              toggle.textContent = revealPassword ? "Skryť" : "Zobraziť";
+              toggle.setAttribute("aria-pressed", revealPassword ? "true" : "false");
+              input.focus();
+            });
+          }
+
+          if (!(form instanceof HTMLFormElement) || !(input instanceof HTMLInputElement)) {
+            return;
+          }
+
+          form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            if (submit instanceof HTMLButtonElement) {
+              submit.disabled = true;
+            }
+
+            const password = input.value;
+            if (!password) {
+              showGate("Zadaj heslo.");
+              return;
+            }
+
+            if (await sha256(password) === HASH) {
+              persistAuth();
+              window.location.reload();
+              return;
+            }
+
+            showGate("Nesprávne heslo.");
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", render, { once: true });
+          return;
+        }
+
+        render();
+      };
+
+      window.addEventListener("storage", (event) => {
+        if (event.key === KEY && event.newValue === HASH) {
+          window.location.reload();
+        }
+      });
+
+      async function main() {
+        if (shouldBypass()) {
+          reveal();
+          return;
+        }
+
+        if (readStoredAuth()) {
+          reveal();
+          return;
+        }
+
+        showGate();
+      }
+
+      main();
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 25</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #25</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC4W">&lt;GCAFC4W&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+
+<br>
+<br>
+Planéta, okolo ktorej malý princ preletel dnes, mala po celom svojom povrchu zvláštne výstražné nápisy:
+<br>
+Alert! Danger! Gevaar! Fare! Vaara! Periculum! Achtung! Perigo!
+<br>
+Fíha!? Toľko jazykov a toľko varovaní...
+<br>
+Rozhodol sa nepristáť a urobil dobre.
+<br>
+Náhodný malilinký meteorit, ktorý prelietal vesmírom, sa dostal do gravitačného poľa planéty
+<br>
+a keď dopadol na jej povrch, ozval sa obrovitánsky výbuch.
+<br>
+Tento nepríjemný zážitok odradil malého princa natoľko, že neváhal ani chvíľu a okamžite odletel.
+<br>
+<br>
+<br><p></p>
+<a><img src="https://malyprinc.mikme.eu/puzzle25_dsfgd2h6v4dsh2cdsvhyd.jpg" width="800"></a>
+</p>
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC4W">
+<img src="https://www.certitudes.org/logo?wp=GCAFC4W" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>

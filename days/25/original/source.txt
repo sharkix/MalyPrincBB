@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 25</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #25</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC4W">&lt;GCAFC4W&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+
+<br>
+<br>
+Planéta, okolo ktorej malý princ preletel dnes, mala po celom svojom povrchu zvláštne výstražné nápisy:
+<br>
+Alert! Danger! Gevaar! Fare! Vaara! Periculum! Achtung! Perigo!
+<br>
+Fíha!? Toľko jazykov a toľko varovaní...
+<br>
+Rozhodol sa nepristáť a urobil dobre.
+<br>
+Náhodný malilinký meteorit, ktorý prelietal vesmírom, sa dostal do gravitačného poľa planéty
+<br>
+a keď dopadol na jej povrch, ozval sa obrovitánsky výbuch.
+<br>
+Tento nepríjemný zážitok odradil malého princa natoľko, že neváhal ani chvíľu a okamžite odletel.
+<br>
+<br>
+<br><p></p>
+<a><img src="https://malyprinc.mikme.eu/puzzle25_dsfgd2h6v4dsh2cdsvhyd.jpg" width="800"></a>
+</p>
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC4W">
+<img src="https://www.certitudes.org/logo?wp=GCAFC4W" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
