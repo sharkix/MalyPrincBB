@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 26</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #26</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC50">&lt;GCAFC50&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+Raz, keď už mal malý princ pocit, že prelietal celú časť známeho vesmíru, ocitol sa veľmi ďaleko od prebádaného územia.
+<br>
+Planétka, na ktorej sa rozhodol pristáť, bola v tej najopustenejšej časti univerza a nebola úplne opustená.
+<br>
+Býval tu taký jeden zvláštny starček s dlhánskou bielou bradou.
+<br>
+Býval tu už ... no, ani sám si nepamätal.
+<br>
+Každý deň si však označoval čiarkou na gigantickú skalnú stenu, ktorá sa týčila uprostred ostrova.
+<br>
+A tak vytesával čiarky a potom ich počítal a počítal a potom nové vytesával, ...
+<br>
+až sa z toho malému princovi krútilo pred očami.
+<br>
+Keďže nechcel zvyšok svojho dobrodružstva stráviť počítaním dní, 
+<br>
+nasadol do rakety, zakýval bradatému starčekovi a odletel na ďalšiu planétu.
+<br>
+<br><p></p>
+<a><img src="https://malyprinc.mikme.eu/puzzle26_sd646ioip6k1mnvcxzs6g.png" width="600"></a>
+</p>
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC50">
+<img src="https://www.certitudes.org/logo?wp=GCAFC50" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
