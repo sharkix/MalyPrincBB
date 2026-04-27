@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 28</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #28</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC5A">&lt;GCAFC5A&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Pristávanie na tejto planéte nebolo len také hocijaké. 
+<br>
+Len čo sa raketa dotkla zeme, zacinkalo to...a keď malý princ vystúpil na povrch,
+<br>
+každý jeho krok zaznel tak, akoby kráčal po xylofóne. 
+<br>
+Malý princ zisťoval, ako sa tvoria zvuky, ktoré vedia vytvoriť slovo ...  
+<br>
+<b>Tu zaznel tón jasnejšie, tam sa mu do cesty postavila nejaká prekážka a niekde iba zašumel... </b>
+<br>
+...a to znenie a neznenie i tie samotné tóny sa rozliehali všade navôkol...
+<br>
+Malý princ sa, omámený hudbou, prechádzal prekrásnou malou planétkou, až zbadal naozaj nádherné miesto - 
+<br> 
+- ostrov plný všelijakých zázračných kvetov. Aby sa k nemu mohol dostať, musel prejsť po moste.
+<br>
+Ako tak kráčal, pod jeho nohami zneli tajomné slová: 
+<br>
+<br>
+<b>Z TICHA I K TÓNOM LADÍ ON.</b>
+<br>
+<br>
+'Aké pekné!' zvolal malý princ, keď prešiel po moste.
+<br>
+Na ostrove poobdivoval kvietky, ktoré tu rástli, ale nedotkol sa ani jedného, aby im neublížil
+<br>
+a vrátil sa tromi skokmi po znejúcom moste a desiatimi späť do svojej rakety.
+<br>
+<br>
+ 
+
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC5A">
+<img src="https://www.certitudes.org/logo?wp=GCAFC5A" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
