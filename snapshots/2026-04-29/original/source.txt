@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 29</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #29</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC5E">&lt;GCAFC5E&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Ak si niekto myslí, že to, čo vytvorí človek, sa dá len tak vymazať, veľmi sa mýli.
+<br>
+Na planéte, kde pristál malý princ, žili tvory, ktoré už precestovali kus vesmíru: 
+<br>
+Mars, Pluto, tajné časti Mliečnej dráhy, nuž navštívili kadejaké miesta.
+<br>
+Jedno im však učarovalo svojou neobvyklou vyspelosťou.
+<br>
+Aj keď sa zvyšok planéty zmietal v starovekých mýtoch a stredovekých predsudkoch a bludoch, oni vynikali svojím intelektom:
+<br>
+písmo, matematika, kalendár či astronómia ohúrili obyvateľov planéty natoľko, 
+<br>
+že časť ich poznatkov začali využívať aj pre svoj život.
+<br>
+Akási civilizácia uprostred nevyspelej planéty dokázala ovplyvniť úplne odlišný druh existencie?
+<br>
+'Zaujímavé,' pomyslel si malý princ a už sa tešil, kedy navštívi miesto, ktoré dokázalo inšpirovať iný druh života. 
+<br>
+<br><p></p>
+<a><img src="https://malyprinc.mikme.eu/puzzle29_dsgd626ct26h4x24z6erxg.jpg" width="800"></a>
+</p>
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC5E">
+<img src="https://www.certitudes.org/logo?wp=GCAFC5E" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>

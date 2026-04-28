@@ -1,0 +1,21 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="ivy" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+<stop offset="88%" style="stop-color:hsl(84,30%,50%);stop-opacity:1" />
+<stop offset="100%" style="stop-color:white;stop-opacity:0" />
+</radialGradient>
+</defs>
+<circle cx="60" cy="60" r="60" fill="url(#ivy)" />
+<circle cx="60" cy="60" r="45" stroke="hsl(84,50%,75%)" stroke-width="15" fill="none" />
+<circle cx="60" cy="60" r="36" fill="#F5F4F2" />
+<path id="west" d="M 60,104 A 41,41 0 1,1 60,16" fill="none" />
+<path id="east" d="M 60,16 A 41,41 0 1,1 60,104" fill="none" />
+<path id="south" d="M 14,60 A 41,41 0 1,0 106,60" fill="none" />
+<text dominant-baseline="middle" text-anchor="middle" font-size="12" font-family="Copperplate, Corbel" fill="hsl(84,50%,25%)">
+<textPath href="#west" startOffset="62%">LATITUDE</textPath>
+<textPath href="#east" startOffset="37%">LONGITUDE</textPath>
+<textPath href="#south" startOffset="50%">CERTITUDE</textPath>
+</text>
+<text dominant-baseline="middle" text-anchor="middle" font-size="20" font-family="Comic Sans MS" font-weight="bold" fill="green" x="62" y="49">37</text>
+<text dominant-baseline="middle" text-anchor="middle" font-size="20" font-family="Comic Sans MS" font-weight="bold" fill="red" x="62" y="75">24</text>
+</svg>
