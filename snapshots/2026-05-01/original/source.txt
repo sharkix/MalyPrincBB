@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 1</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #1</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC0N">&lt;GCAFC0N&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Šiesta planéta, planéta, kde žil zemepisec, ktorý však nikde nebol, prebudila u malého princa zvedavosť...
+<br>
+Čo všetko a kto všetko sa môže nachádzať v nekonečnom vesmíre?
+<br>
+Takto vzrušený celkom novou myšlienkou sa rozhodol, že tajuplná obloha, plná hviezd, stojí za detailnejší prieskum.
+<br>
+Rýchlo nasadol do svojej rakety, zapol si pásy, chcel spustiť štartovacie systémy a keď mal nahodiť štartovaciu sekvenciu, zrazu zamrzol...
+<br>
+Ako? Čo?
+<br>
+Cítil sa stratený ako Jacob na ostrove a v panike skúšal >: ?_?_?_?_?_?
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC0N">
+<img src="https://www.certitudes.org/logo?wp=GCAFC0N" title="namiesto medzery zadaj podtržník" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
