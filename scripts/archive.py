@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import calendar
 import hashlib
 try:
     import imghdr
@@ -689,6 +690,28 @@ def archive_item_label(day_key: str) -> str:
     return f"Deň {day_key}"
 
 
+def next_retry_date(day_key: str, after_date: date) -> date:
+    target_day = 31 if day_key == BONUS_DAY_KEY else int(day_key)
+    start_month = after_date.month
+    start_year = after_date.year
+
+    for offset in range(0, 120):
+        month_index = start_month - 1 + offset
+        year = start_year + month_index // 12
+        month = month_index % 12 + 1
+        if target_day > calendar.monthrange(year, month)[1]:
+            continue
+        candidate = date(year, month, target_day)
+        if candidate > after_date:
+            return candidate
+
+    raise RuntimeError(f"Could not find next retry date for {day_key}.")
+
+
+def format_short_date(value: date) -> str:
+    return value.strftime("%d.%m.%Y")
+
+
 def extract_day_key(html_text: str, fallback: str) -> str:
     match = DAY_RE.search(html_text)
     if not match:
@@ -789,9 +812,23 @@ def render_index(root: Path, auth_hash: str) -> None:
     missing_count = max(0, TOTAL_ARCHIVE_ITEMS - captured_count)
     captured_label = slovak_plural_form(captured_count, "stiahnuté zadanie", "stiahnuté zadania", "stiahnutých zadaní")
     missing_label = slovak_plural_form(missing_count, "zostávajúce zadanie", "zostávajúce zadania", "zostávajúcich zadaní")
+    today = datetime.now(ZoneInfo("Europe/Bratislava")).date()
     latest = None
     if metadata:
         latest = max(metadata.values(), key=lambda item: item.get("archive_date", ""))
+
+    missing_keys = [day_key for day_key in DAY_KEYS if day_key not in metadata]
+    retry_items: list[str] = []
+    for day_key in missing_keys:
+        retry_date = next_retry_date(day_key, today)
+        retry_items.append(
+            f"""
+        <article class="retry-item">
+          <strong>{archive_item_label(day_key)}</strong>
+          <span>{format_short_date(retry_date)}</span>
+        </article>
+"""
+        )
 
     cards: list[str] = []
     for day_key in DAY_KEYS:
@@ -846,6 +883,20 @@ def render_index(root: Path, auth_hash: str) -> None:
       </section>
 """
 
+    retry_block = ""
+    if retry_items:
+        retry_block = f"""
+    <section class="retry-strip">
+      <div class="retry-box">
+        <p class="eyebrow">Najbližšie plánované pokusy</p>
+        <p class="retry-intro">Prehľad sa počíta z aktuálne chýbajúcich slotov a ukazuje najbližší budúci termín, keď sa ich workflow pokúsi znova stiahnuť.</p>
+        <div class="retry-grid">
+{''.join(retry_items)}
+        </div>
+      </div>
+    </section>
+"""
+
     html = f"""<!DOCTYPE html>
 <html lang="sk">
 <head>
@@ -883,6 +934,8 @@ def render_index(root: Path, auth_hash: str) -> None:
       <p>Automatizácia beží každý deň okolo 00:10 v časovej zóne Europe/Bratislava.</p>
       <p>Adresáre <code>snapshots/YYYY-MM-DD</code> držia dennú históriu, <code>days/01-30</code> a <code>days/BONUS</code> držia stabilné odkazy.</p>
     </section>
+
+{retry_block}
 
     <section class="day-grid">
 {''.join(cards)}
