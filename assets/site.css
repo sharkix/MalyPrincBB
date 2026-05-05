@@ -144,6 +144,50 @@ h1 {
   font-size: 0.92em;
 }
 
+.retry-strip {
+  margin-top: 22px;
+}
+
+.retry-box {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 24px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+}
+
+.retry-intro {
+  margin: 0;
+  max-width: 72ch;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.retry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.retry-item {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--accent-soft);
+}
+
+.retry-item strong {
+  font-size: 0.96rem;
+}
+
+.retry-item span {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .day-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -209,6 +253,10 @@ h1 {
   .day-grid {
     grid-template-columns: 1fr;
   }
+
+  .retry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
@@ -226,11 +274,16 @@ h1 {
 
   .hero-copy,
   .latest-box,
+  .retry-box,
   .day-card {
     padding: 20px;
   }
 
   .hero-stats {
     flex-direction: column;
+  }
+
+  .retry-grid {
+    grid-template-columns: 1fr;
   }
 }
