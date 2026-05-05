@@ -2,7 +2,7 @@ name: Archive Maly Princ
 
 on:
   schedule:
-    - cron: "10 22,23 * * *"
+    - cron: "10 0,22,23 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -44,10 +44,17 @@ jobs:
           fi
 
           ARCHIVE_DATE="$(TZ=Europe/Bratislava date +%F)"
+          LOCAL_HOUR="$(TZ=Europe/Bratislava date +%H)"
           ARCHIVE_MONTH="$(printf '%s' "$ARCHIVE_DATE" | cut -d- -f1-2)"
           TODAY_DAY="$(TZ=Europe/Bratislava date +%d)"
           FIRST_SNAPSHOT="$(find snapshots -mindepth 1 -maxdepth 1 -type d -exec basename {} \\; | sort | head -n 1)"
           CAMPAIGN_MONTH=""
+
+          if [ "$LOCAL_HOUR" != "00" ] && [ "$LOCAL_HOUR" != "01" ]; then
+            echo "Local time in Bratislava is not in the midnight retry window, skipping scheduled run."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           if [ -n "$FIRST_SNAPSHOT" ]; then
             CAMPAIGN_MONTH="$(printf '%s' "$FIRST_SNAPSHOT" | cut -d- -f1-2)"
