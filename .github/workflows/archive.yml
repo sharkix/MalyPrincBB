@@ -47,7 +47,7 @@ jobs:
           LOCAL_HOUR="$(TZ=Europe/Bratislava date +%H)"
           ARCHIVE_MONTH="$(printf '%s' "$ARCHIVE_DATE" | cut -d- -f1-2)"
           TODAY_DAY="$(TZ=Europe/Bratislava date +%d)"
-          FIRST_SNAPSHOT="$(find snapshots -mindepth 1 -maxdepth 1 -type d -exec basename {} \\; | sort | head -n 1)"
+          FIRST_SNAPSHOT="$(ls -1 snapshots 2>/dev/null | sort | head -n 1)"
           CAMPAIGN_MONTH=""
 
           if [ "$LOCAL_HOUR" != "00" ] && [ "$LOCAL_HOUR" != "01" ]; then
