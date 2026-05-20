@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 21</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #21</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC4G">&lt;GCAFC4G&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Planéta, na ktorej malý princ pristál dnes, bola plná maličkých bielych "guličiek",
+<br>
+zoskupených do hlúčikov, v ktorých si čosi šepkali a vymýšľali...keď vtom zrazu všetko stíchlo.
+<br>
+Malý princ si uvedomil, že maličkí šibali asi patria k tým zvedavejším tvorom...a že jeho raketa je otvorená...
+<br>
+...prirodzene sa logicky zamyslel a rozhodol sa, že skúsi všetky tie malé potvorky spočítať, 
+<br>
+aby zistil, ...nuž, napadla mu možnosť, že niektoré z nich sa možno rozhodli preskúmať to neznáme čudo, čo u nich pristálo.
+<br>
+...počítal už celú večnosť, keď tu zrazu prišiel na miesto, kde chýbala celá skupinka malých nezbedníkov a hneď vedľa ešte jedna.
+<br>
+Rozbehol sa teda k rakete a pribehol práve včas, pretože jeden z tých malých objaviteľov
+<br> 
+práve strkal svoj zvedavý noštek do dverí...
+<br>
+Malý princ sa rýchlo prešmykol dnu a zabuchol im dvere skôr, ako za noštekom vošla aj nôžka ;)
+<br>
+Rýchlo nahodil motory a vyštartoval ešte pred tým, ako by mu malí zvedavci rozobrali jeho prenášadlo.
+<br>
+<br>
+<br>
+e(988057) - e(394697)
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC4G">
+<img src="https://www.certitudes.org/logo?wp=GCAFC4G" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
