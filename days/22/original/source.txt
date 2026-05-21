@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 22</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ #22</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFC4H">&lt;GCAFC4H&gt;</a></span></span></strong></h2>
+
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Ďalšia z planét mala celkom nezvyčajných obyvateľov. Mali tri nohy a tri ruky, každú s dvoma prstami.
+<br>
+Našťastie, oči mali iba dve a rovnako aj uši, a tak malý princ nemusel zisťovať,
+<br>
+ktoré z očí ho sleduje a kam sa má pozerať.
+<br>
+Tieto zvláštne tvory hovorili zvláštnym jazykom - 
+<br>
+bola to zmes samohlások vo vysokých a nízkych tónoch a
+<br>
+počítali ešte čudnejším spôsobom.
+<br>
+Malý princ však potreboval doplniť zásoby, ktoré ale títo čudáci na planéte nemali.
+<br>
+Spýtal sa ich teda aspoň, kde je najbližšia planéta.
+<br>
+Odpovedali mu čudnými číslami, ktoré ukazovali na svojich troch dvojprstých rukách.
+<br>
+Vôbec im nerozumel, čísla si však pozorne zapísal a skúsil ich nadiktovať svojej rakete.
+<br>
+Tá polohu najbližšej planéty vylúštila za desať sekúnd a mohli vyštartovať.
+<br>
+<br>
+<br>
+BEBFBEFFCFFEEBEBE
+</div>
+<br>
+<br>
+<div style="text-align:center">
+<a href="https://www.certitudes.org/certitude?wp=GCAFC4H">
+<img src="https://www.certitudes.org/logo?wp=GCAFC4H" title="Kliknutím zobrazíte zoznam riešiteľov" style="filter:drop-shadow(3px 3px 3px #CCC)"></a>
+
+</div>    </main>
+  </div>
+</body>
+</html>
