@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Malý Princ</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <p><strong>Malý Princ</strong></p>
+      </div>
+      <div class="header-right">
+        <p><strong>Deň: 31</strong></p>
+      </div>
+    </header>
+    <main>
+      <div style="text-align:center">
+<h2><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive">&uacute;loha pre ke&scaron;ku Mal&yacute; Princ BONUS</span></span><strong><span style="font-size:24px"><span style="font-family:Comic Sans MS,cursive"> <a href="https://coord.info/GCAFBZ1">&lt;GCAFBZ1&gt;</a></span></span></strong></h2>
+</div>
+<div style="font-family:Comic Sans MS;text-align:center">
+<br>
+<br>
+Posledná planéta, ktorá malého princa očarila, bola zelenomodrá.
+<br>
+Boli na nej moria, ostrovy, svetadiely, lúky, lesy, rieky, jazerá, hory, doliny, jakyne i kopce, mestá a dediny...,
+<br>
+kvitli tu stromy a kríky a kvietky, spod machu vykúkali na svet rôzne huby a tajne schovávali svojich nájomníkov,
+<br>
+lietali tu všakovaké spevavce i tí, ktorým príroda zabudla naladiť tóny, prechádzali sa tu mini aj maxi tvory a potvory, plávali okaté i bezočivé stvorenia,
+<br> 
+...a žili tu ľudia: malí, veľkí, čierni, žltí, bieli, ...žili na tých najrôznejších miestach.
+<br>
+...a každé miesto ukrývalo nejaké tajomstvo, ktoré čakalo na svoje odhalenie ;) <3
+<br>
+<br>
+<br> 
+
+<div style="text-align:center">
+<br><p><img src="https://malyprinc.mikme.eu/bonus.jpg" style="width:800px" /></p>
+</div>
+<br>
+<br>
+
+<br><p><img src="https://malyprinc.mikme.eu/Hedviga_Froggy_1.jpg" style="width:300px" /></p>
+
+<br>
+Ďakujeme za spoločné dobrodružstvá.
+<br>
+Mikme & Kikavika
+<br>
+<br>
+<br>
+Poďakovanie patrí djmajinovi za technickú podporu.
+<br>
+<br>
+<br>
+
+
+<a href="https://coord.info/GCAFBZ1"><img src="https://malyprinc.mikme.eu/GC_logo.png" width="400"></a>
+</div>    </main>
+  </div>
+</body>
+</html>
